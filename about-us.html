@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revinova.ai — About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    :root {
+      --coral:          #FC5D41;
+      --magenta:        #E551F3;
+      --grad-primary:   linear-gradient(135deg, #FC5D41, #E551F3);
+      --text:           #1d1d1f;
+      --text-secondary: rgba(29,29,31,0.60);
+      --text-muted:     rgba(29,29,31,0.40);
+      --border:         rgba(0,0,0,0.08);
+    }
+
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.08s; }
+    .fade-up.d2 { transition-delay: 0.16s; }
+    .fade-up.d3 { transition-delay: 0.24s; }
+    .fade-up.d4 { transition-delay: 0.32s; }
+
+    .grad-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── Sub-page hero ── */
+    #hero {
+      position: relative; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #ffffff; text-align: center;
+      padding: 80px 40px 64px;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 80px 80px; pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 280px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(252,93,65,0.08), rgba(229,81,243,0.06));
+      filter: blur(80px); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 760px; margin: 0 auto; }
+    .hero-kicker {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral); margin-bottom: 20px;
+    }
+    .hero-kicker-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--coral);
+      box-shadow: 0 0 8px rgba(252,93,65,0.6); animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 8px rgba(252,93,65,0.5); }
+      50%     { opacity:0.7; transform:scale(1.3); box-shadow:0 0 14px rgba(252,93,65,0); }
+    }
+    .hero-h1 {
+      font-size: clamp(36px, 4.5vw, 58px); font-weight: 900;
+      letter-spacing: -0.03em; margin-bottom: 6px; color: var(--text);
+    }
+    .hero-h1-light {
+      font-size: clamp(28px, 3.5vw, 46px);
+      color: rgba(29,29,31,0.30); margin-bottom: 28px;
+    }
+    .hero-body {
+      font-size: clamp(14px, 1.4vw, 17px);
+      color: var(--text-secondary); line-height: 1.75;
+      max-width: 680px; margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker fade-up"><span class="hero-kicker-dot"></span> About Us</div>
+    <h1 class="hero-h1 fade-up d1">We're building the future</h1>
+    <p class="hero-h1-light fade-up d2"><span class="grad-text">of Agentic AI.</span></p>
+    <p class="hero-body fade-up d3">At Revinova.ai, we believe AI should do more than respond — it should think, act, and deliver outcomes. We're on a mission to help businesses move beyond traditional chatbots and unlock the true power of Agentic AI — intelligent agents that can reason, take actions, collaborate with systems, and work alongside humans to solve real-world problems.</p>
+  </div>
+</section>
+
+<!-- ABOUT / JOURNEY STAIRCASE -->
+<section id="about-story">
+  <div class="story-inner">
+
+    <div class="story-header fade-up">
+      <div class="story-kicker"><span class="hero-kicker-dot"></span> About Revinova</div>
+      <h2 class="story-h2">We spent years helping people learn.<br><span class="grad-text" style="font-weight:300;">Now we're helping them act.</span></h2>
+    </div>
+
+    <div class="stair-row">
+
+      <!-- Card 01: THEN -->
+      <div class="stair-card sc-1 fade-up d1">
+        <div class="sc-numval">01</div>
+        <div class="sc-num">Then</div>
+        <div class="sc-tag">Learning Platform</div>
+        <h3 class="sc-h3">Built on years of enterprise trust.</h3>
+        <p class="sc-body">Revinova began as a learning platform. For years we helped enterprises run training, onboarding, and education through branded academies — for some of the most recognized companies in the country. That history taught us how to build software that large, demanding, highly regulated organizations can actually trust.</p>
+        <div class="sc-arrow">→</div>
+      </div>
+
+      <!-- Card 02: NOW -->
+      <div class="stair-card sc-2 fade-up d2">
+        <div class="sc-numval">02</div>
+        <div class="sc-num">Now</div>
+        <div class="sc-tag">Agent Platform · AWS Bedrock</div>
+        <h3 class="sc-h3">A new era. Not just AI tools —<br>a platform.</h3>
+        <p class="sc-body">We paired our modern learning platform with an agent platform built on AWS Bedrock — one that lets customers stand up AI agents that understand context, grounded in the content and rules that matter to them. The learning platform gets people ready. The agent supports them in the exact moment they need it.</p>
+        <div class="sc-arrow">→</div>
+      </div>
+
+      <!-- Card 03: NEXT -->
+      <div class="stair-card sc-3 fade-up d3">
+        <div class="sc-numval">03</div>
+        <div class="sc-num">Next</div>
+        <div class="sc-tag">Into Clinical Trials</div>
+        <h3 class="sc-h3">We chose clinical trials because<br>the work matters.</h3>
+        <p class="sc-body">Sites have to train staff quickly and keep them right once a study is live. A missed answer in the moment can turn into a protocol deviation. In a deeply regulated world, governance and traceability aren't extras — they're the entire job. That plays directly to our strengths. We are just getting started, and the people building it are why we will get it right.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  #about-story {
+    background: #f5f5f7;
+    padding: 100px 40px 120px;
+    position: relative; overflow: hidden;
+  }
+  .story-inner { max-width: 1160px; margin: 0 auto; }
+
+  .story-header { text-align: center; margin-bottom: 72px; }
+  .story-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral);
+    margin-bottom: 20px;
+  }
+  .story-h2 {
+    font-size: clamp(28px, 3.5vw, 44px); font-weight: 900;
+    letter-spacing: -0.02em; line-height: 1.2; color: var(--text);
+  }
+
+  /* Cards row */
+  .stair-row {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  .stair-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 24px;
+    padding: 40px 36px 36px;
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.07);
+    box-shadow: 0 4px 32px rgba(0,0,0,0.06);
+    transition: box-shadow 0.5s cubic-bezier(0.16,1,0.3,1), border-color 0.5s cubic-bezier(0.16,1,0.3,1), transform 0.5s cubic-bezier(0.16,1,0.3,1);
+    display: flex; flex-direction: column;
+  }
+  .stair-card::before {
+    content: '';
+    position: absolute; inset: 0; border-radius: 24px;
+    background: linear-gradient(135deg, rgba(252,93,65,0.06) 0%, rgba(229,81,243,0.05) 100%);
+    opacity: 0; transition: opacity 0.4s ease;
+    pointer-events: none;
+  }
+  .stair-card:hover {
+    box-shadow: 0 12px 48px rgba(252,93,65,0.12);
+    border-color: rgba(252,93,65,0.20);
+    transform: translateY(-5px);
+  }
+  .stair-card:hover::before { opacity: 1; }
+
+  .sc-1, .sc-2, .sc-3 { margin-top: 0; }
+
+  /* Gap between cards */
+  .stair-card + .stair-card { margin-left: 24px; }
+
+  /* THEN / NOW / NEXT big gradient word */
+  .sc-num {
+    font-family: 'Inter', sans-serif; font-size: 40px; font-weight: 900;
+    letter-spacing: -0.02em; line-height: 1;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 20px;
+  }
+
+  /* Small number — top right */
+  .sc-numval {
+    position: absolute; top: 28px; right: 28px;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 800;
+    letter-spacing: 0.06em; color: rgba(29,29,31,0.25);
+  }
+
+  .sc-tag {
+    display: block;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.07em; text-transform: uppercase;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 16px;
+  }
+
+  .sc-h3 {
+    font-size: 18px; font-weight: 800; letter-spacing: -0.01em;
+    color: var(--text); margin-bottom: 14px; line-height: 1.35;
+  }
+
+  .sc-body {
+    font-size: 14px; line-height: 1.8;
+    color: var(--text-secondary);
+  }
+
+  /* Arrow connector between cards */
+  .sc-arrow {
+    position: absolute; right: -20px; top: 50%;
+    transform: translateY(-50%);
+    width: 40px; height: 40px; border-radius: 50%;
+    background: #fff;
+    border: 1.5px solid rgba(252,93,65,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; color: var(--coral);
+    z-index: 2;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+
+  /* Mobile — stack vertically, no stagger */
+  @media (max-width: 900px) {
+    .stair-row { flex-direction: column; gap: 24px; }
+    .stair-card + .stair-card { margin-left: 0; }
+    .sc-1, .sc-2, .sc-3 { margin-top: 0; }
+    .sc-arrow { display: none; }
+    .stair-card:hover { transform: none; }
+  }
+  @media (max-width: 480px) {
+    #about-story { padding: 72px 24px 80px; }
+    .stair-card { padding: 28px 24px; }
+    .sc-num { font-size: 40px; }
+    .sc-h3 { font-size: 16px; }
+  }
+</style>
+
+<!-- OUR TEAM -->
+<section id="our-team-alt" style="background:#f5f5f7; padding:48px 40px 100px; position:relative; overflow:hidden;">
+  <div style="position:absolute;inset:0;pointer-events:none;"></div>
+  <div style="max-width:1160px; margin:0 auto; position:relative; z-index:1;">
+
+    <div style="text-align:center; margin-bottom:64px;">
+      <div class="eyebrow-kicker" style="margin-bottom:16px;">Our Team</div>
+      <h2 class="team-h2">The people behind<br><span class="grad-text" style="font-weight:300;">the agents.</span></h2>
+    </div>
+
+    <div class="team-alt-grid">
+      <div class="team-alt-card fade-up d1">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/caleb.png" alt="Caleb Costa" class="team-img"/></div>
+        <div class="team-alt-info">
+          <div class="team-alt-name">Caleb Costa</div>
+          <div class="team-alt-role">CEO</div>
+        </div>
+      </div>
+      <div class="team-alt-card fade-up d2">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/vasuram-1.png" alt="Vasu Ram" class="team-img"/></div>
+        <div class="team-alt-info">
+          <div class="team-alt-name">Vasu Ram</div>
+          <div class="team-alt-role">Founder / CTO</div>
+        </div>
+      </div>
+      <div class="team-alt-card fade-up d3">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/rich.png" alt="Richard Shea" class="team-img"/></div>
+        <div class="team-alt-info">
+          <div class="team-alt-name">Richard Shea</div>
+          <div class="team-alt-role">Director of Customer Success</div>
+        </div>
+      </div>
+      <div class="team-alt-card fade-up d4">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/jackie.png" alt="Jackie Hartel" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Jackie Hartel</div><div class="team-alt-role">Sr. Account Executive</div></div>
+      </div>
+      <div class="team-alt-card fade-up d1">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/vinayak-2.png" alt="Vinayak Ekambaram" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Vinayak Ekambaram</div><div class="team-alt-role">General Manager</div></div>
+      </div>
+      <div class="team-alt-card fade-up d2">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/kavin.png" alt="Kavin Kumar" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Kavin Kumar</div><div class="team-alt-role">Technical Implementation Manager</div></div>
+      </div>
+      <div class="team-alt-card fade-up d3">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/sakthi.png" alt="Neezha Sakthivel" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Neezha Sakthivel</div><div class="team-alt-role">Chief Architect R&D</div></div>
+      </div>
+      <div class="team-alt-card fade-up d4">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/nambi.png" alt="Tamil Nambi" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Tamil Nambi</div><div class="team-alt-role">User Experience Architect</div></div>
+      </div>
+      <div class="team-alt-card fade-up d1">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/rajaram-3.png" alt="Rajaraman Swaminathan" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Rajaraman Swaminathan</div><div class="team-alt-role">Product Manager</div></div>
+      </div>
+      <div class="team-alt-card fade-up d2">
+        <div class="team-alt-img-wrap"><img src="https://cja.3d8.myftpupload.com/wp-content/uploads/2026/06/balaji.png" alt="Balaji Thiyagarajan" class="team-img"/></div>
+        <div class="team-alt-info"><div class="team-alt-name">Balaji Thiyagarajan</div><div class="team-alt-role">Managed Services Specialist</div></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .team-alt-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 870px;
+    margin: 0 auto;
+  }
+  .team-alt-grid .team-alt-card:last-child { grid-column: 2; }
+  .team-alt-card {
+    position: relative; overflow: hidden;
+    aspect-ratio: 3/4;
+    cursor: pointer;
+  }
+  .team-alt-card:hover .team-alt-img-wrap { transform: scale(1.05); }
+  .team-alt-card:hover .team-alt-info { background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 70%, transparent 100%); }
+  .team-alt-img-wrap {
+    width: 100%; height: 100%; border-radius: 16px;
+    margin: 0; overflow: hidden; border: none;
+    background: none; box-shadow: none;
+    transition: transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  }
+  .team-alt-info {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 48px 20px 20px;
+    background: linear-gradient(to top, rgba(13,11,30,0.95) 0%, rgba(13,11,30,0.60) 60%, transparent 100%);
+    border-radius: 0 0 16px 16px;
+    transition: background 0.3s;
+  }
+  .team-alt-name {
+    font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+    background: var(--grad-primary);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    margin-bottom: 4px;
+  }
+  .team-alt-role {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 500;
+    color: rgba(255,255,255,0.65); text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 10px;
+  }
+  .team-linkedin {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 6px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.20);
+    color: rgba(255,255,255,0.70);
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .team-linkedin:hover { background: #0A66C2; color: #fff; border-color: #0A66C2; transform: translateY(-2px); }
+</style>
+
+<style>
+  .eyebrow-kicker {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--coral); margin-bottom: 20px;
+  }
+  .team-h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(32px, 4vw, 52px); font-weight: 900;
+    letter-spacing: -0.03em; line-height: 1.1; color: var(--text);
+  }
+  .team-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px; max-width: 860px; margin: 0 auto;
+  }
+  .team-card {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px; padding: 32px 24px;
+    text-align: center;
+    transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+  }
+  .team-card:hover {
+    border-color: rgba(252,93,65,0.25);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+    transform: translateY(-4px);
+  }
+  .team-img-wrap {
+    width: 140px; height: 140px; border-radius: 50%;
+    margin: 0 auto 20px;
+    overflow: hidden;
+    border: 3px solid transparent;
+    background: linear-gradient(#fff, #fff) padding-box,
+                var(--grad-primary) border-box;
+    box-shadow: 0 8px 28px rgba(252,93,65,0.15);
+  }
+  .team-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(100%); }
+  .team-name {
+    font-family: 'Lato', sans-serif; font-size: 17px; font-weight: 700;
+    color: var(--text); margin-bottom: 6px; letter-spacing: -0.01em;
+  }
+  .team-role {
+    font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .team-card:last-child { grid-column: 2; }
+
+  @media (max-width: 768px) {
+    .team-grid { grid-template-columns: 1fr; max-width: 320px; }
+    #our-team { padding: 80px 24px; }
+    .team-alt-grid {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 100%;
+      padding: 0 24px;
+    }
+    .team-alt-grid .team-alt-card:last-child { grid-column: auto; }
+    #our-team-alt { padding: 60px 0; }
+  }
+  @media (max-width: 480px) {
+    .team-alt-grid { grid-template-columns: 1fr; max-width: 320px; padding: 0; }
+  }
+</style>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<!-- AI REPORT STRIP -->
+<script>
+  // observe strip after it's in DOM
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.ai-report-strip.fade-up').forEach(el => observer.observe(el));
+  });
+</script>
+<section style="background:#f5f5f7; position:relative;">
+  <div style="max-width:1160px; margin:0 auto; padding:60px 40px;">
+    <div class="ai-report-strip fade-up">
+      <div class="intake-cta-left">
+        <div class="intake-cta-badge">
+          <span class="intake-cta-badge-dot"></span> Free Assessment
+        </div>
+        <h3 class="intake-cta-heading">Discover where your business stands on the AI Journey</h3>
+        <p class="intake-cta-desc">Get a personalized AI readiness report in minutes. Understand your gaps and your next steps.</p>
+      </div>
+      <div class="intake-cta-right">
+        <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="intake-cta-btn">Get Your Free AI Report →</a>
+        <span class="intake-cta-footnote">Takes less than 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .ai-report-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 48px; flex-wrap: wrap;
+    background: #ffffff; border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 24px; padding: 40px 44px;
+    position: relative; overflow: hidden;
+  }
+  .ai-report-strip::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(135deg, #FC5D41, #E551F3);
+  }
+  .ai-report-strip::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(252,93,65,0.04), transparent 60%);
+  }
+  .intake-cta-badge { display: inline-flex; align-items: center; gap: 7px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: #FC5D41; margin-bottom: 14px; }
+  .intake-cta-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #FC5D41; box-shadow: 0 0 8px rgba(252,93,65,0.6); flex-shrink: 0; animation: dotPulse 2s ease-in-out infinite; }
+  .intake-cta-heading { font-family: 'Lato', sans-serif; font-size: clamp(20px, 2vw, 26px); font-weight: 900; letter-spacing: -0.02em; color: #1d1d1f; margin-bottom: 10px; line-height: 1.2; }
+  .intake-cta-desc { font-family: 'Lato', sans-serif; font-size: 15px; color: rgba(29,29,31,0.60); line-height: 1.65; max-width: 480px; }
+  .intake-cta-right { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; position: relative; z-index: 1; }
+  .intake-cta-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FC5D41, #E551F3); color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; padding: 15px 32px; border-radius: 999px; text-decoration: none; letter-spacing: -0.01em; box-shadow: 0 6px 24px rgba(252,93,65,0.32); transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
+  .intake-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(252,93,65,0.48); }
+  .intake-cta-footnote { font-family: 'Inter', sans-serif; font-size: 11px; color: rgba(29,29,31,0.40); text-align: center; }
+  @media (max-width: 768px) {
+    .ai-report-strip { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+</body>
+</html>

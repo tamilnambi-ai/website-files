@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revinova.ai — AI Layer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    :root {
+      --coral:          #FC5D41;
+      --coral-dark:     #e04c32;
+      --magenta:        #E551F3;
+      --pink:           #E953D0;
+      --pink-lt:        #FF76E8;
+      --violet:         #8b5cf6;
+      --indigo:         #6366f1;
+      --grad-primary:   linear-gradient(135deg, #FC5D41, #E551F3);
+      --grad-secondary: linear-gradient(135deg, #E953D0, #FF76E8);
+      --text:           #1d1d1f;
+      --text-secondary: rgba(29,29,31,0.60);
+      --text-muted:     rgba(29,29,31,0.40);
+      --surface:        #f5f5f7;
+      --surface-dark:   #0d0b1e;
+      --border:         rgba(0,0,0,0.08);
+    }
+
+    /* ── Scroll animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.08s; }
+    .fade-up.d2 { transition-delay: 0.16s; }
+    .fade-up.d3 { transition-delay: 0.24s; }
+    .fade-up.d4 { transition-delay: 0.32s; }
+    .fade-up.d5 { transition-delay: 0.40s; }
+    .fade-up.d6 { transition-delay: 0.48s; }
+
+    /* ── Shared ── */
+    .section-wrap { position: relative; overflow: hidden; }
+    .section-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .section-gray  { background: #f5f5f7; }
+    .section-dark  { background: #0d0b1e; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 20px;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+    .eyebrow.on-dark        { color: rgba(255,255,255,0.35); }
+    .eyebrow.on-dark .eyebrow-dot { background: rgba(255,255,255,0.35); }
+
+    .section-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(32px, 3.8vw, 50px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .section-h2.on-dark { color: #ffffff; }
+
+    .section-lead {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 680px;
+    }
+    .section-lead.on-dark { color: rgba(255,255,255,0.50); }
+
+    .grad-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--grad-primary);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      box-shadow: 0 4px 16px rgba(252,93,65,0.28);
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(252,93,65,0.45); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 500;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover { background: #f5f5f7; border-color: rgba(0,0,0,0.20); transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.20);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+
+    /* ── Card base ── */
+    .card-light {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .card-light:hover {
+      border-color: rgba(252,93,65,0.25);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HERO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh; min-height: 720px;
+      display: flex; align-items: center;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+      background-size: 80px 80px;
+      z-index: 1; pointer-events: none;
+    }
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(110px); pointer-events: none; will-change: transform;
+    }
+    .blob-1 { width:640px;height:640px; background:#FC5D41; top:-15%;left:-10%; opacity:0.06; animation:blobFloat 16s ease-in-out infinite; }
+    .blob-2 { width:520px;height:520px; background:#E551F3; top:20%;right:-10%; opacity:0.05; animation:blobFloat 20s ease-in-out infinite -5s; }
+    .blob-3 { width:420px;height:420px; background:#E953D0; bottom:-10%;left:35%; opacity:0.07; animation:blobFloat 22s ease-in-out infinite -10s; }
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(24px,-16px) scale(1.04); }
+      66% { transform: translate(-16px,24px) scale(0.96); }
+    }
+    .ray {
+      position: absolute; top:-10%; width:1px; height:120%;
+      background: linear-gradient(to bottom, transparent, rgba(252,93,65,0.10), transparent);
+      animation: rayMove 9s ease-in-out infinite; pointer-events: none;
+    }
+    .ray:nth-child(4) { left:15%; }
+    .ray:nth-child(5) { left:38%; animation-delay:-3s; width:2px; background:linear-gradient(to bottom,transparent,rgba(229,81,243,0.07),transparent); }
+    .ray:nth-child(6) { left:67%; animation-delay:-6s; }
+    @keyframes rayMove {
+      0%,100% { opacity:0.35; transform:scaleX(1); }
+      50%      { opacity:0.85; transform:scaleX(1.8); }
+    }
+
+    .hero-inner {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 1160px;
+      margin: 0 auto; padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+    }
+    .hero-left {
+      display: flex; flex-direction: column;
+      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    }
+    .hero-right { animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s both; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    @keyframes dotPulse {
+      0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 8px rgba(252,93,65,0.5); }
+      50%     { opacity:0.7; transform:scale(1.3); box-shadow:0 0 14px rgba(252,93,65,0); }
+    }
+
+    .hero-h1 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(44px, 5.5vw, 68px);
+      font-weight: 900; line-height: 1.05;
+      letter-spacing: -0.03em; color: var(--text);
+      margin-bottom: 0;
+    }
+    .hero-h1-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      font-weight: 700;
+      color: var(--text);
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+    .hero-body {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(14px, 1.3vw, 16px);
+      font-weight: 300; line-height: 1.7;
+      color: var(--text-secondary);
+      margin-top: 12px; margin-bottom: 36px;
+      max-width: 480px;
+    }
+    .hero-cta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+    /* ── Agent Network Diagram ── */
+    .agnet-diagram {
+      width: 100%; max-width: 500px;
+      margin: 0 auto; display: flex; flex-direction: column; gap: 0;
+      background: #0d0b1e;
+      border-radius: 24px;
+      padding: 28px 24px 24px;
+      box-shadow:
+        0 2px 4px rgba(0,0,0,0.08),
+        0 8px 16px rgba(0,0,0,0.12),
+        0 24px 48px rgba(0,0,0,0.18),
+        0 48px 80px rgba(0,0,0,0.14),
+        0 2px 0px 1px rgba(255,255,255,0.04) inset;
+      border: 1px solid rgba(255,255,255,0.07);
+      position: relative; overflow: hidden;
+    }
+    .agnet-diagram::before {
+      content: ''; position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 50%, rgba(252,93,65,0.07), transparent 65%),
+        radial-gradient(ellipse 60% 40% at 20% 20%, rgba(139,92,246,0.08), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 80% 80%, rgba(229,81,243,0.05), transparent 60%);
+    }
+
+    /* Main 3-col grid: left cards | center | right cards */
+    .agnet-main {
+      display: grid;
+      grid-template-columns: 140px 1fr 140px;
+      align-items: center;
+      position: relative;
+      min-height: 280px;
+    }
+
+    /* SVG lines overlay */
+    .agnet-lines {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+      overflow: visible;
+    }
+
+    /* Animated dashed lines */
+    @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+    .agnet-line-int { animation: dashFlow 1.4s linear infinite; }
+    .agnet-line-ext { animation: dashFlow 1.4s linear infinite; }
+
+    /* Left + right card stacks */
+    .agnet-col { display: flex; flex-direction: column; gap: 12px; z-index: 2; }
+
+    /* Center node */
+    .agnet-center {
+      display: flex; align-items: center; justify-content: center;
+      z-index: 2; position: relative;
+    }
+    .agnet-center-ring {
+      position: absolute; width: 144px; height: 144px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(252,93,65,0.22);
+      animation: ringPulse 3s ease-in-out infinite;
+    }
+    @keyframes ringPulse {
+      0%,100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.07); opacity: 1; }
+    }
+    .agnet-center-core {
+      width: 116px; height: 116px; border-radius: 50%;
+      background: var(--grad-primary);
+      box-shadow: 0 0 48px rgba(252,93,65,0.45), 0 0 90px rgba(229,81,243,0.18);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 6px;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .agnet-center-label {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      color: #ffffff; line-height: 1.45; margin-top: -6px;
+    }
+    .agnet-center-label strong { display: block; font-weight: 700; color: #ffffff; font-size: 10px; }
+
+    /* Satellite cards */
+    .agnet-card {
+      border-radius: 14px; padding: 12px 14px;
+      display: flex; flex-direction: column; gap: 7px;
+      z-index: 2;
+    }
+    .agnet-internal {
+      background: linear-gradient(135deg, rgba(252,93,65,0.10) 0%, rgba(13,11,30,0.95) 60%);
+      border: 1.5px solid rgba(252,93,65,0.30);
+      box-shadow: 0 4px 24px rgba(252,93,65,0.12), inset 0 1px 0 rgba(252,93,65,0.08);
+    }
+    .agnet-external {
+      background: linear-gradient(135deg, rgba(139,92,246,0.12) 0%, rgba(13,11,30,0.95) 60%);
+      border: 1.5px solid rgba(139,92,246,0.35);
+      box-shadow: 0 4px 24px rgba(139,92,246,0.12), inset 0 1px 0 rgba(139,92,246,0.08);
+    }
+    .agnet-card-badge {
+      display: inline-block;
+      font-family: 'Inter', sans-serif; font-size: 9px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      border-radius: 999px; padding: 2px 8px; width: fit-content;
+    }
+    .agnet-badge-int { background: rgba(252,93,65,0.12); color: var(--coral); border: 1px solid rgba(252,93,65,0.22); }
+    .agnet-badge-ext { background: rgba(139,92,246,0.12); color: #a78bfa; border: 1px solid rgba(139,92,246,0.25); }
+    .agnet-card-icon { color: rgba(255,255,255,0.50); line-height: 1; }
+    .agnet-card-name {
+      font-family: 'Inter', sans-serif; font-size: 11.5px; font-weight: 400;
+      color: rgba(255,255,255,0.60); line-height: 1.45;
+    }
+    .agnet-card-name strong { font-weight: 700; color: #ffffff; }
+
+    /* Protocol strip */
+    .agnet-protocol {
+      display: flex; align-items: center; justify-content: center;
+      gap: 7px; margin-top: 14px;
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 500;
+      color: rgba(255,255,255,0.38); letter-spacing: 0.04em;
+    }
+    .agnet-dot { color: rgba(255,255,255,0.18); }
+
+    /* Bottom feature chips */
+    .agnet-features {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 8px; margin-top: 14px;
+    }
+    .agnet-feat {
+      display: flex; align-items: flex-start; gap: 8px;
+      background: #0d0b1e;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; padding: 11px 12px;
+    }
+    .agnet-feat-icon { font-size: 13px; color: var(--coral); flex-shrink: 0; margin-top: 1px; }
+    .agnet-feat-title {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      color: #ffffff; margin-bottom: 2px;
+    }
+    .agnet-feat-body {
+      font-family: 'Inter', sans-serif; font-size: 10px;
+      color: rgba(255,255,255,0.42); line-height: 1.4;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       STATS BAR
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #stats-bar {
+      background: #0d0b1e;
+      position: relative; overflow: hidden;
+    }
+    #stats-bar::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 80% at 10% 50%, rgba(252,93,65,0.07), transparent 60%),
+        radial-gradient(ellipse 50% 80% at 90% 50%, rgba(139,92,246,0.08), transparent 60%);
+      pointer-events: none;
+    }
+    .stats-bar-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 56px 40px;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      position: relative; z-index: 1;
+    }
+    .stats-bar-item {
+      padding: 0 32px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .stats-bar-item:first-child { border-left: 1px solid rgba(255,255,255,0.08); }
+    .stats-bar-number {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(32px, 3.5vw, 48px);
+      font-weight: 900; letter-spacing: -0.03em;
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1; margin-bottom: 12px;
+    }
+    .stats-bar-label {
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      color: rgba(255,255,255,0.45); line-height: 1.55;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       ADOPTION TRAP
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #adoption-trap {
+      background: #0d0b1e; overflow: hidden; position: relative;
+    }
+    #adoption-trap::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(252,93,65,0.07), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(139,92,246,0.09), transparent 60%);
+      pointer-events: none;
+    }
+    .eyebrow-pill {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--coral);
+      border: 1.5px solid rgba(252,93,65,0.30);
+      border-radius: 999px; padding: 6px 14px;
+      margin-bottom: 28px;
+    }
+    .eyebrow-pill-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--coral); flex-shrink: 0;
+    }
+    .trap-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(32px, 3.8vw, 50px);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; color: #ffffff;
+      margin-bottom: 20px;
+    }
+    .trap-lead {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.5vw, 17px); font-weight: 300;
+      color: rgba(255,255,255,0.50); line-height: 1.7;
+      max-width: 680px; margin-bottom: 56px;
+    }
+    .trap-flow {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; border-top: 1px solid rgba(255,255,255,0.10);
+    }
+    .trap-step {
+      padding: 32px 28px 0 0;
+      border-right: 1px solid rgba(255,255,255,0.08);
+    }
+    .trap-step:last-child { border-right: none; padding-right: 0; }
+    .trap-step:not(:first-child) { padding-left: 28px; }
+    .trap-num {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; color: var(--coral); margin-bottom: 16px;
+    }
+    .trap-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: rgba(255,255,255,0.85); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .trap-title.highlight { color: var(--coral); }
+    .trap-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: rgba(255,255,255,0.42); line-height: 1.65;
+    }
+    .trap-body.highlight { color: rgba(252,93,65,0.80); }
+    .trap-callout {
+      margin-top: 48px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--coral);
+      border-radius: 0 16px 16px 0;
+      padding: 28px 32px;
+      font-family: 'Lato', sans-serif; font-size: 15px;
+      color: rgba(255,255,255,0.50); line-height: 1.7;
+    }
+    .trap-callout strong { color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       THE FIX
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #the-fix { background: #ffffff; }
+    .fix-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: start;
+    }
+    .fix-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(30px, 3.2vw, 44px);
+      font-weight: 900; line-height: 1.1;
+      letter-spacing: -0.02em; color: var(--text);
+      margin-bottom: 20px;
+    }
+    .fix-body {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(14px, 1.4vw, 16px); font-weight: 300;
+      color: var(--text-secondary); line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .fix-bold {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(14px, 1.4vw, 16px); font-weight: 700;
+      color: var(--text); line-height: 1.6;
+    }
+    .fix-right-label {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--text-muted); margin-bottom: 20px;
+    }
+    .fix-checklist { display: flex; flex-direction: column; gap: 10px; }
+    .fix-check-item {
+      display: flex; align-items: center; gap: 14px;
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 16px 20px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .fix-check-item:hover {
+      border-color: rgba(252,93,65,0.25);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+      transform: translateX(3px);
+    }
+    .fix-check-icon {
+      width: 24px; height: 24px; border-radius: 6px; flex-shrink: 0;
+      background: rgba(252,93,65,0.08);
+      border: 1.5px solid rgba(252,93,65,0.20);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .fix-check-text {
+      font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 400;
+      color: var(--text); line-height: 1.4;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       IN THE FLOW OF WORK
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #in-the-flow { background: #0d0b1e; overflow: hidden; position: relative; }
+    #in-the-flow::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 10% 30%, rgba(252,93,65,0.07), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 90% 70%, rgba(139,92,246,0.09), transparent 60%);
+      pointer-events: none;
+    }
+    .flow-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 16px; margin-top: 56px;
+    }
+    .flow-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 28px 24px;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .flow-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(252,93,65,0.22); transform: translateY(-3px); }
+    .flow-card-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: rgba(255,255,255,0.88); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .flow-card-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: rgba(255,255,255,0.42); line-height: 1.65;
+    }
+    .flow-banner {
+      margin-top: 40px; border-radius: 16px; padding: 28px 40px;
+      background: var(--grad-primary);
+      text-align: center;
+      font-family: 'Lato', sans-serif; font-size: clamp(15px,1.6vw,18px); font-weight: 700;
+      color: #ffffff; line-height: 1.5;
+      box-shadow: 0 8px 32px rgba(252,93,65,0.30);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WHAT IT CHANGES
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #what-changes { background: #ffffff; }
+    .changes-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 16px; margin-top: 56px;
+    }
+    .changes-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 28px 24px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .changes-card::before {
+      content: ''; position: absolute; top:0; left:0; right:0; height:3px;
+      background: var(--grad-primary);
+    }
+    .changes-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 10px 32px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .changes-num {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; color: var(--coral); margin-bottom: 14px;
+    }
+    .changes-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .changes-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       NOT ANOTHER CHATBOT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #not-chatbot { background: #0d0b1e; overflow: hidden; position: relative; }
+    #not-chatbot::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(252,93,65,0.07), transparent 60%),
+        radial-gradient(ellipse 60% 70% at 20% 80%, rgba(139,92,246,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .chatbot-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center; margin-top: 0;
+    }
+    .chatbot-body {
+      font-family: 'Lato', sans-serif; font-size: clamp(14px,1.4vw,16px); font-weight: 300;
+      color: rgba(255,255,255,0.50); line-height: 1.75; margin-bottom: 32px;
+    }
+    .trust-badges { display: flex; flex-wrap: wrap; gap: 10px; }
+    .trust-badge {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+      color: rgba(255,255,255,0.55);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 999px; padding: 6px 16px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .trust-badge:hover { border-color: rgba(252,93,65,0.30); color: rgba(255,255,255,0.80); }
+    .compare-stack { display: flex; flex-direction: column; gap: 12px; }
+    .compare-row {
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 20px 24px;
+      display: flex; align-items: flex-start; gap: 16px;
+      transition: background 0.2s;
+    }
+    .compare-row.muted { background: rgba(255,255,255,0.02); }
+    .compare-row.active {
+      background: rgba(252,93,65,0.07);
+      border-color: rgba(252,93,65,0.20);
+    }
+    .compare-badge {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      border-radius: 999px; padding: 4px 12px; white-space: nowrap; flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .compare-badge.chatbot-badge {
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.50);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+    .compare-badge.agent-badge {
+      background: var(--grad-primary);
+      color: #ffffff;
+    }
+    .compare-text {
+      font-family: 'Lato', sans-serif; font-size: 14px; line-height: 1.65;
+    }
+    .compare-row.muted .compare-text { color: rgba(255,255,255,0.40); }
+    .compare-row.active .compare-text { color: rgba(255,255,255,0.80); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       CONTENT ENGINE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #content-engine { background: #ffffff; }
+    .engine-steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 0; margin-top: 56px; align-items: stretch;
+    }
+    .engine-step-wrap {
+      display: flex; align-items: stretch; gap: 0;
+    }
+    .engine-step {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 24px 20px;
+      flex: 1; display: flex; flex-direction: column;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .engine-step:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 8px 24px rgba(0,0,0,0.06); transform: translateY(-3px); }
+    .engine-step-num {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 10px;
+    }
+    .engine-step-title {
+      font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .engine-step-body {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+    .engine-arrow {
+      flex-shrink: 0; align-self: center; padding: 0 12px;
+      color: var(--coral); font-size: 18px; line-height: 1;
+    }
+    .engine-callout {
+      margin-top: 32px;
+      background: #0d0b1e;
+      border-radius: 16px; padding: 24px 28px;
+      display: flex; align-items: flex-start; gap: 16px;
+    }
+    .engine-callout-icon {
+      font-size: 20px; flex-shrink: 0; margin-top: 2px;
+    }
+    .engine-callout-text {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: rgba(255,255,255,0.50); line-height: 1.70;
+    }
+    .engine-callout-text strong { color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       MEASURABLE ROI
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #measurable-roi { background: #f5f5f7; }
+    .roi-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 16px; margin-top: 56px;
+    }
+    .roi-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 28px 24px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .roi-card::before {
+      content: ''; position: absolute; top:0; left:0; right:0; height:3px;
+      background: var(--grad-primary);
+    }
+    .roi-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 10px 32px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .roi-number {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(36px,4vw,52px); font-weight: 900; letter-spacing: -0.03em;
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1; margin-bottom: 10px;
+    }
+    .roi-label {
+      font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .roi-body {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HOW IT WORKS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #how-it-works { background: #ffffff; }
+    .how-header { text-align: center; }
+    .how-header .eyebrow-pill {
+      background: rgba(252,93,65,0.06);
+    }
+    .how-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(30px,3.5vw,48px); font-weight: 900;
+      line-height: 1.1; letter-spacing: -0.02em;
+      color: var(--text); margin-bottom: 16px;
+    }
+    .how-lead {
+      font-family: 'Lato', sans-serif; font-size: clamp(15px,1.4vw,17px); font-weight: 300;
+      color: var(--text-secondary); line-height: 1.7;
+      max-width: 560px; margin: 0 auto 56px;
+    }
+    .how-steps {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 24px;
+    }
+    .how-step { text-align: center; }
+    .how-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--grad-primary);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      font-family: 'Inter', sans-serif; font-size: 22px; font-weight: 800;
+      color: #ffffff;
+      box-shadow: 0 6px 20px rgba(252,93,65,0.30);
+    }
+    .how-step-num {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 8px;
+    }
+    .how-step-title {
+      font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .how-step-body {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FINAL CTA
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #final-cta { background: #0d0b1e; overflow: hidden; position: relative; }
+    #final-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 100%, rgba(252,93,65,0.12), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 20% 10%, rgba(139,92,246,0.12), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 80% 20%, rgba(229,81,243,0.08), transparent 60%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      max-width: 760px; margin: 0 auto;
+      padding: 120px 40px;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .cta-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(36px, 4.5vw, 58px);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -0.03em;
+      color: #ffffff; margin-bottom: 20px;
+    }
+    .cta-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.4vw, 17px); font-weight: 300;
+      color: rgba(255,255,255,0.50);
+      max-width: 560px; margin: 0 auto 40px; line-height: 1.70;
+    }
+    .cta-buttons { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .cta-trust {
+      margin-top: 28px;
+      font-family: 'Inter', sans-serif; font-size: 12px;
+      color: rgba(255,255,255,0.25); letter-spacing: 0.01em;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESPONSIVE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+      .hero-right { max-width: 560px; }
+      .fix-grid { grid-template-columns: 1fr; gap: 48px; }
+      .flow-grid { grid-template-columns: repeat(2,1fr); }
+      .changes-grid { grid-template-columns: repeat(2,1fr); }
+      .chatbot-grid { grid-template-columns: 1fr; gap: 48px; }
+      .engine-steps { grid-template-columns: repeat(2,1fr); }
+      .engine-arrow { display: none; }
+      .roi-grid { grid-template-columns: repeat(2,1fr); }
+      .how-steps { grid-template-columns: repeat(2,1fr); }
+      .trap-flow { grid-template-columns: repeat(2,1fr); gap: 0; }
+      .trap-step:nth-child(2) { border-right: none; }
+      .trap-step:nth-child(3) { border-top: 1px solid rgba(255,255,255,0.10); padding-top: 32px; margin-top: 32px; padding-left: 0; padding-right: 28px; }
+      .trap-step:nth-child(4) { border-top: 1px solid rgba(255,255,255,0.10); padding-top: 32px; margin-top: 32px; }
+      .stats-bar-inner { grid-template-columns: repeat(3, 1fr); gap: 0; }
+      .stats-bar-item:nth-child(3) { border-right: 1px solid rgba(255,255,255,0.08); }
+      .stats-bar-item:nth-child(4) { border-left: 1px solid rgba(255,255,255,0.08); }
+      .stats-bar-item { padding: 24px 20px; border-right: 1px solid rgba(255,255,255,0.08); border-top: 1px solid rgba(255,255,255,0.08); }
+      .stats-bar-item:first-child { border-top: none; }
+      .stats-bar-item:nth-child(2) { border-top: none; }
+      .stats-bar-item:nth-child(3) { border-top: none; }
+    }
+    @media (max-width: 768px) {
+      .section-inner { padding: 80px 24px; }
+      .hero-inner { padding-left: 24px; padding-right: 24px; }
+      .flow-grid { grid-template-columns: 1fr; }
+      .changes-grid { grid-template-columns: 1fr; }
+      .engine-steps { grid-template-columns: 1fr; }
+      .roi-grid { grid-template-columns: 1fr; }
+      .how-steps { grid-template-columns: repeat(2,1fr); }
+      .trap-flow { grid-template-columns: 1fr; }
+      .trap-step { border-right: none !important; border-top: 1px solid rgba(255,255,255,0.10); padding: 24px 0 0 0 !important; margin-top: 24px; }
+      .trap-step:first-child { border-top: none; margin-top: 0; }
+      .stats-bar-inner { grid-template-columns: repeat(2, 1fr); padding: 40px 24px; }
+      .stats-bar-item { padding: 24px 16px; border-top: 1px solid rgba(255,255,255,0.08); }
+      .stats-bar-item:first-child,
+      .stats-bar-item:nth-child(2) { border-top: none; }
+    }
+    @media (max-width: 560px) {
+      #hero { height: auto; padding: 100px 0 60px; }
+      .stats-bar-inner { grid-template-columns: 1fr; }
+      .stats-bar-item { border-right: none !important; border-left: none !important; border-top: 1px solid rgba(255,255,255,0.08); padding: 24px 16px; }
+      .stats-bar-item:first-child { border-top: none; }
+      .agnet-main {
+        grid-template-columns: 80px 1fr 80px;
+        min-height: 200px;
+      }
+      .agnet-features { grid-template-columns: 1fr; }
+      .agnet-diagram { padding: 20px 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ HERO ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <h1 class="hero-h1">
+        Not another chatbot.<br>
+        <span class="grad-text">A coach trained on your business.</span>
+      </h1>
+      <p class="hero-h1-sub">The intelligence layer for connected operations, learning,<br>and execution</p>
+      <p class="hero-body">Bring together systems, knowledge, workflows, and learning in one intelligent layer to deliver contextual guidance, streamline operations, and support smarter execution across the user journey.</p>
+      <div class="hero-cta">
+        <a href="https://bookings.cloud.microsoft/bookwithme/user/4fa74e3ccc5c401699a4e561195bf4e2%40revinova.com?anonymous&ismsaljsauthenabled" target="_blank" class="btn-primary">Request a Demo →</a>
+        
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="agnet-diagram">
+
+        <!-- 3-col main grid -->
+        <div class="agnet-main">
+
+          <!-- SVG lines overlay -->
+          <svg class="agnet-lines" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+            <line class="agnet-line-int" x1="140" y1="70"  x2="250" y2="140" stroke="rgba(252,93,65,0.50)" stroke-width="1.5" stroke-dasharray="6 5" stroke-dashoffset="0"/>
+            <line class="agnet-line-int" x1="140" y1="210" x2="250" y2="140" stroke="rgba(252,93,65,0.50)" stroke-width="1.5" stroke-dasharray="6 5" stroke-dashoffset="0"/>
+            <line class="agnet-line-ext" x1="360" y1="70"  x2="250" y2="140" stroke="rgba(139,92,246,0.55)" stroke-width="1.5" stroke-dasharray="6 5" stroke-dashoffset="0"/>
+            <line class="agnet-line-ext" x1="360" y1="210" x2="250" y2="140" stroke="rgba(139,92,246,0.55)" stroke-width="1.5" stroke-dasharray="6 5" stroke-dashoffset="0"/>
+          </svg>
+
+          <!-- Left column: internal agents -->
+          <div class="agnet-col">
+            <div class="agnet-card agnet-internal">
+              <div class="agnet-card-badge agnet-badge-int">Internal</div>
+              <div class="agnet-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".9"/><rect x="13" y="3" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="3" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".5"/><rect x="13" y="13" width="8" height="8" rx="2" fill="currentColor" opacity=".7"/></svg>
+              </div>
+              <div class="agnet-card-name">Revinova<br><strong>Sales Agent</strong></div>
+            </div>
+            <div class="agnet-card agnet-internal">
+              <div class="agnet-card-badge agnet-badge-int">Internal</div>
+              <div class="agnet-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2" opacity=".9"/><path d="M12 8v4l3 3" stroke="currentColor" stroke-width="2" stroke-linecap="round" opacity=".9"/></svg>
+              </div>
+              <div class="agnet-card-name">Revinova<br><strong>Ops Agent</strong></div>
+            </div>
+          </div>
+
+          <!-- Center node -->
+          <div class="agnet-center">
+            <div class="agnet-center-ring"></div>
+            <div class="agnet-center-core">
+              <img src="https://revinova.ai/wp-content/uploads/2026/06/revinova-hero-logo.png" width="52" height="52" style="object-fit:contain;" alt="Revinova"/>
+              <div class="agnet-center-label">AI Readiness<strong>Agent</strong></div>
+            </div>
+          </div>
+
+          <!-- Right column: external agents -->
+          <div class="agnet-col">
+            <div class="agnet-card agnet-external">
+              <div class="agnet-card-badge agnet-badge-ext">External</div>
+              <div class="agnet-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".9"/></svg>
+              </div>
+              <div class="agnet-card-name">Partner<br><strong>Agent</strong></div>
+            </div>
+            <div class="agnet-card agnet-external">
+              <div class="agnet-card-badge agnet-badge-ext">External</div>
+              <div class="agnet-card-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M8 7h8M8 12h5M8 17h3" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><rect x="3" y="3" width="18" height="18" rx="3" stroke="currentColor" stroke-width="2"/></svg>
+              </div>
+              <div class="agnet-card-name">3rd-Party<br><strong>AI Agent</strong></div>
+            </div>
+          </div>
+
+        </div><!-- /agnet-main -->
+
+        <!-- Protocol strip -->
+        <div class="agnet-protocol">
+          <span>A2A Protocol</span><span class="agnet-dot">·</span>
+          <span>Secure</span><span class="agnet-dot">·</span>
+          <span>Stateless</span><span class="agnet-dot">·</span>
+          <span>Open Standard</span>
+        </div>
+
+        <!-- Bottom feature chips -->
+        <div class="agnet-features">
+          <div class="agnet-feat">
+            <span class="agnet-feat-icon">◆</span>
+            <div>
+              <div class="agnet-feat-title">Independent</div>
+              <div class="agnet-feat-body">No lock-in to any single workflow</div>
+            </div>
+          </div>
+          <div class="agnet-feat">
+            <span class="agnet-feat-icon">◈</span>
+            <div>
+              <div class="agnet-feat-title">Scalable</div>
+              <div class="agnet-feat-body">One agent, many callers</div>
+            </div>
+          </div>
+          <div class="agnet-feat">
+            <span class="agnet-feat-icon">◆</span>
+            <div>
+              <div class="agnet-feat-title">Interoperable</div>
+              <div class="agnet-feat-body">Any framework or vendor</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ STATS BAR ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stats-bar-item fade-up d1">
+      <div class="stats-bar-number">60%</div>
+      <div class="stats-bar-label">Reduction in repeat support tickets</div>
+    </div>
+    <div class="stats-bar-item fade-up d2">
+      <div class="stats-bar-number">3x</div>
+      <div class="stats-bar-label">Faster time to value for new users</div>
+    </div>
+    <div class="stats-bar-item fade-up d3">
+      <div class="stats-bar-number">40%</div>
+      <div class="stats-bar-label">Increase in feature adoption rates</div>
+    </div>
+    <div class="stats-bar-item fade-up d4">
+      <div class="stats-bar-number">85%</div>
+      <div class="stats-bar-label">Of questions resolved without a human</div>
+    </div>
+    <div class="stats-bar-item fade-up d5">
+      <div class="stats-bar-number">2x</div>
+      <div class="stats-bar-label">The accounts served with the same CS team</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ ADOPTION TRAP ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="adoption-trap" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow-pill fade-up"><span class="eyebrow-pill-dot"></span> The Adoption Trap</div>
+    <h2 class="trap-h2 fade-up">
+      The more you sell,<br>
+      <span style="font-weight:300;color:rgba(255,255,255,0.45);">the more you have to staff.</span>
+    </h2>
+    <p class="trap-lead fade-up">Your product is powerful. But powerful products are rarely obvious. Every gap in user understanding becomes a ticket, a call, or another onboarding session your team has to run.</p>
+    <div class="trap-flow">
+      <div class="trap-step fade-up d1">
+        <div class="trap-num">01</div>
+        <div class="trap-title">Users buy the product</div>
+        <div class="trap-body">Excited to get started, but the real work is just beginning.</div>
+      </div>
+      <div class="trap-step fade-up d2">
+        <div class="trap-num">02</div>
+        <div class="trap-title">Users get stuck</div>
+        <div class="trap-body">Workflows, integrations, configurations — every gap is a friction point.</div>
+      </div>
+      <div class="trap-step fade-up d3">
+        <div class="trap-num">03</div>
+        <div class="trap-title">Users contact your team</div>
+        <div class="trap-body">CS, support, and services absorb the load. The same questions, over and over.</div>
+      </div>
+      <div class="trap-step fade-up d4">
+        <div class="trap-num">04</div>
+        <div class="trap-title highlight">Your team becomes the ceiling</div>
+        <div class="trap-body highlight">Headcount caps how many accounts you can actually serve well.</div>
+      </div>
+    </div>
+    <div class="trap-callout fade-up">
+      <strong>Success makes it worse.</strong> Win more accounts and you hire more support, success, and services people to keep them productive. The Learning Agent breaks the cycle, giving every user a coach that scales without headcount.
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ THE FIX ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="the-fix" class="section-wrap">
+  <div class="section-inner">
+    <div class="fix-grid">
+      <div class="fade-up">
+        <div class="eyebrow-pill" style="background:rgba(252,93,65,0.06);"><span class="eyebrow-pill-dot"></span> The Fix</div>
+        <h2 class="fix-h2">
+          A product coach<br>
+          <span style="font-weight:300;color:rgba(29,29,31,0.50);">for every account</span>
+        </h2>
+        <p class="fix-body">The Learning Agent works the way your best implementation consultant would, if you could assign one to every customer. It guides users inside the product at the moment they need it, instead of sending them to documentation or a support queue.</p>
+        <p class="fix-bold">Faster ramp, better outcomes, and customers who can stand on their own.</p>
+      </div>
+      <div class="fade-up d2">
+        <div class="fix-right-label">For every interaction, the agent knows</div>
+        <div class="fix-checklist">
+          <div class="fix-check-item">
+            <div class="fix-check-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FC5D41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fix-check-text">The user's role and permission level</span>
+          </div>
+          <div class="fix-check-item">
+            <div class="fix-check-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FC5D41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fix-check-text">The workflow they are trying to finish</span>
+          </div>
+          <div class="fix-check-item">
+            <div class="fix-check-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FC5D41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fix-check-text">Where they are getting stuck right now</span>
+          </div>
+          <div class="fix-check-item">
+            <div class="fix-check-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FC5D41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fix-check-text">What they have already tried</span>
+          </div>
+          <div class="fix-check-item">
+            <div class="fix-check-icon">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#FC5D41" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <span class="fix-check-text">The content that fits their exact situation</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ IN THE FLOW OF WORK ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="in-the-flow" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow-pill fade-up"><span class="eyebrow-pill-dot"></span> In the Flow of Work</div>
+    <h2 class="trap-h2 fade-up">Coaching that happens in the work,<br><span style="font-weight:300;color:rgba(255,255,255,0.45);">not next to it.</span></h2>
+    <p class="trap-lead fade-up">Traditional onboarding asks users to stop working and go learn. The Learning Agent brings the guidance to them, so a question never has to become a ticket.</p>
+    <div class="flow-grid">
+      <div class="flow-card fade-up d1">
+        <div class="flow-card-title">Step-by-step guidance</div>
+        <div class="flow-card-body">Walks users through a task in the order they actually do it, without leaving the product.</div>
+      </div>
+      <div class="flow-card fade-up d2">
+        <div class="flow-card-title">Best-practice recommendations</div>
+        <div class="flow-card-body">The right approach for their plan, their data, and their specific setup, not a generic FAQ.</div>
+      </div>
+      <div class="flow-card fade-up d3">
+        <div class="flow-card-title">Plain-language explanations</div>
+        <div class="flow-card-body">Why a workflow works the way it does, explained in terms the user actually understands.</div>
+      </div>
+      <div class="flow-card fade-up d4">
+        <div class="flow-card-title">Workflow coaching</div>
+        <div class="flow-card-body">Guidance that stays with the user from first step to finished result, picking up where they left off.</div>
+      </div>
+      <div class="flow-card fade-up d5">
+        <div class="flow-card-title">Role-specific answers</div>
+        <div class="flow-card-body">An admin and an end user ask the same question and each gets exactly the right answer for their context.</div>
+      </div>
+      <div class="flow-card fade-up d6">
+        <div class="flow-card-title">Grounded in your content</div>
+        <div class="flow-card-body">Answers drawn only from what you have approved, with the source cited, so guidance is accurate and auditable.</div>
+      </div>
+    </div>
+    <div class="flow-banner fade-up">Every question becomes a moment of learning instead of a support ticket.</div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ WHAT IT CHANGES ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="what-changes" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow-pill fade-up" style="background:rgba(252,93,65,0.06);"><span class="eyebrow-pill-dot"></span> What It Changes</div>
+    <h2 class="fix-h2 fade-up">What happens when<br><span style="font-weight:300;color:rgba(29,29,31,0.50);">every user has a coach.</span></h2>
+    <p class="fix-body fade-up">The Learning Agent shifts onboarding from a cost your team absorbs to an advantage that compounds with every account you win.</p>
+    <div class="changes-grid">
+      <div class="changes-card fade-up d1">
+        <div class="changes-num">01</div>
+        <div class="changes-title">Lower support load</div>
+        <div class="changes-body">Common questions get answered before they ever reach a ticket. Your team focuses on complex, strategic work that actually requires a human.</div>
+      </div>
+      <div class="changes-card fade-up d2">
+        <div class="changes-num">02</div>
+        <div class="changes-title">Customer success that scales</div>
+        <div class="changes-body">Serve more accounts without adding people to keep them productive. Headcount is no longer the ceiling on growth.</div>
+      </div>
+      <div class="changes-card fade-up d3">
+        <div class="changes-num">03</div>
+        <div class="changes-title">Faster time to value</div>
+        <div class="changes-body">Users go from signed up to productive in days, not weeks of onboarding calls and documentation hunting.</div>
+      </div>
+      <div class="changes-card fade-up d4">
+        <div class="changes-num">04</div>
+        <div class="changes-title">Deeper adoption</div>
+        <div class="changes-body">The agent surfaces advanced features at the right moment, driving use of the capabilities that actually move retention metrics.</div>
+      </div>
+      <div class="changes-card fade-up d5">
+        <div class="changes-num">05</div>
+        <div class="changes-title">Stronger retention</div>
+        <div class="changes-body">Confident customers get results. Customers who get results renew and expand. Competence built by the agent becomes revenue protected.</div>
+      </div>
+      <div class="changes-card fade-up d6">
+        <div class="changes-num">06</div>
+        <div class="changes-title">Services freed for real work</div>
+        <div class="changes-body">Your implementation and CS experts stop repeating the same enablement and start doing the strategic work they were hired for.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ NOT ANOTHER CHATBOT ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="not-chatbot" class="section-wrap">
+  <div class="section-inner">
+    <div class="chatbot-grid">
+      <div class="fade-up">
+        <div class="eyebrow-pill" style="margin-bottom:28px;"><span class="eyebrow-pill-dot"></span> Your Product, Your Knowledge</div>
+        <h2 class="trap-h2">Not another chatbot.<br><span style="font-weight:300;color:rgba(255,255,255,0.45);">A coach trained on your business.</span></h2>
+        <p class="chatbot-body">The Learning Agent runs on your content, your workflows, your best practices, and your processes. It answers only from what you have approved, with the source cited, so the guidance is accurate and auditable.</p>
+        <div class="trust-badges">
+          <span class="trust-badge">Built on AWS Bedrock</span>
+          <span class="trust-badge">SOC 2 Type II</span>
+          <span class="trust-badge">HIPAA Ready</span>
+          <span class="trust-badge">ISO Certified</span>
+          <span class="trust-badge">GDPR Compliant</span>
+          <span class="trust-badge">Zero hallucinations</span>
+        </div>
+      </div>
+      <div class="compare-stack fade-up d2">
+        <div class="compare-row muted">
+          <span class="compare-badge chatbot-badge">Chatbot</span>
+          <span class="compare-text">Answers a question and forgets the user the moment they leave.</span>
+        </div>
+        <div class="compare-row active">
+          <span class="compare-badge agent-badge">Learning Agent</span>
+          <span class="compare-text">Knows the account, builds capability over time, and becomes an extension of your customer success and enablement teams, available to every customer at once.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ CONTENT ENGINE ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="content-engine" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow-pill fade-up" style="background:rgba(252,93,65,0.06);"><span class="eyebrow-pill-dot"></span> The Content Engine</div>
+    <h2 class="fix-h2 fade-up">Create the content once.<br><span style="font-weight:300;color:rgba(29,29,31,0.50);">The agent teaches it everywhere.</span></h2>
+    <p class="fix-body fade-up">The agent is only as strong as what it teaches from. Revinova gives your success team a fast way to build and keep that content current, with AI-assisted authoring built in. Content gets made in hours instead of weeks, so producing it never becomes the next bottleneck.</p>
+    <div class="engine-steps fade-up">
+      <div class="engine-step-wrap">
+        <div class="engine-step">
+          <div class="engine-step-num">Step 1</div>
+          <div class="engine-step-title">Create or import</div>
+          <div class="engine-step-body">Your team authors content in the platform, or builds it with AI-assisted tools and brings it in.</div>
+        </div>
+        <div class="engine-arrow">→</div>
+      </div>
+      <div class="engine-step-wrap">
+        <div class="engine-step">
+          <div class="engine-step-num">Step 2</div>
+          <div class="engine-step-title">Publish once</div>
+          <div class="engine-step-body">One update reaches every account. Change a workflow and the current version is what everyone sees.</div>
+        </div>
+        <div class="engine-arrow">→</div>
+      </div>
+      <div class="engine-step-wrap">
+        <div class="engine-step">
+          <div class="engine-step-num">Step 3</div>
+          <div class="engine-step-title">Coach in context</div>
+          <div class="engine-step-body">The same content powers the agent's answers in the flow of work, at the moment users need it.</div>
+        </div>
+        <div class="engine-arrow">→</div>
+      </div>
+      <div class="engine-step-wrap">
+        <div class="engine-step">
+          <div class="engine-step-num">Step 4</div>
+          <div class="engine-step-title">Learn from the gaps</div>
+          <div class="engine-step-body">The agent shows your team what users ask and where they get stuck, so you know what to build next.</div>
+        </div>
+      </div>
+    </div>
+    <div class="engine-callout fade-up">
+      <div class="engine-callout-icon">🔄</div>
+      <div class="engine-callout-text">Step four feeds step one. Every question your customers ask becomes the roadmap for the content that prevents the next one, so your <strong>success team builds the library that drives adoption</strong> instead of answering the same questions by hand.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ MEASURABLE ROI ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="measurable-roi" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow-pill fade-up" style="background:rgba(252,93,65,0.06);"><span class="eyebrow-pill-dot"></span> Measurable ROI</div>
+    <h2 class="fix-h2 fade-up">Grow accounts.<br><span style="font-weight:300;color:rgba(29,29,31,0.50);">Not headcount.</span></h2>
+    <p class="fix-body fade-up">The metrics that matter to CS leaders, product teams, and the CFO, all moved by the Learning Agent.</p>
+    <div class="roi-grid">
+      <div class="roi-card fade-up d1">
+        <div class="roi-number">60%</div>
+        <div class="roi-label">Reduction in repeat support tickets</div>
+        <div class="roi-body">Users get answers in the product, before they ever reach your queue.</div>
+      </div>
+      <div class="roi-card fade-up d2">
+        <div class="roi-number">3x</div>
+        <div class="roi-label">Faster time to value for new users</div>
+        <div class="roi-body">Onboarding that took weeks of calls now happens in days.</div>
+      </div>
+      <div class="roi-card fade-up d3">
+        <div class="roi-number">40%</div>
+        <div class="roi-label">Increase in advanced feature adoption</div>
+        <div class="roi-body">Users discover and activate the features that drive retention.</div>
+      </div>
+      <div class="roi-card fade-up d4">
+        <div class="roi-number">85%</div>
+        <div class="roi-label">Of questions resolved without a human</div>
+        <div class="roi-body">Your team focuses on strategy, not repeat enablement.</div>
+      </div>
+      <div class="roi-card fade-up d5">
+        <div class="roi-number">+22%</div>
+        <div class="roi-label">Improvement in net revenue retention</div>
+        <div class="roi-body">Confident users who get results renew and expand.</div>
+      </div>
+      <div class="roi-card fade-up d6">
+        <div class="roi-number">2x</div>
+        <div class="roi-label">The accounts served with the same CS team</div>
+        <div class="roi-body">Scale your customer base without scaling your headcount.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ HOW IT WORKS ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="how-it-works" class="section-wrap">
+  <div class="section-inner">
+    <div class="how-header">
+      <div class="eyebrow-pill fade-up" style="background:rgba(252,93,65,0.06);display:inline-flex;"><span class="eyebrow-pill-dot"></span> How It Works</div>
+      <h2 class="how-h2 fade-up">Live inside your product in days,<br><span style="font-weight:300;color:rgba(29,29,31,0.50);">not months.</span></h2>
+      <p class="how-lead fade-up">Your CSM leads the process end to end. No engineering resources required on your side.</p>
+    </div>
+    <div class="how-steps">
+      <div class="how-step fade-up d1">
+        <div class="how-circle">1</div>
+        <div class="how-step-num">Step 1</div>
+        <div class="how-step-title">Content &amp; Knowledge Setup</div>
+        <div class="how-step-body">We ingest your documentation, guides, best practices, and workflows into the coaching engine.</div>
+      </div>
+      <div class="how-step fade-up d2">
+        <div class="how-circle">2</div>
+        <div class="how-step-num">Step 2</div>
+        <div class="how-step-title">Agent Configuration</div>
+        <div class="how-step-body">We build a product-specific coaching persona matching your terminology, roles, and use cases.</div>
+      </div>
+      <div class="how-step fade-up d3">
+        <div class="how-circle">3</div>
+        <div class="how-step-num">Step 3</div>
+        <div class="how-step-title">Testing &amp; Validation</div>
+        <div class="how-step-body">The agent is tested against real user scenarios to ensure accuracy across all key workflows.</div>
+      </div>
+      <div class="how-step fade-up d4">
+        <div class="how-circle">4</div>
+        <div class="how-step-num">Step 4</div>
+        <div class="how-step-title">Go-Live &amp; Iteration</div>
+        <div class="how-step-body">Launch to your users with adoption metrics tracked from day one and content gaps fed back continuously.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI REPORT STRIP -->
+<section class="section-wrap section-gray">
+  <div style="max-width:1160px; margin:0 auto; padding:60px 40px;">
+    <div class="ai-report-strip fade-up">
+      <div class="intake-cta-left">
+        <div class="intake-cta-badge" style="color:var(--coral);">
+          <span class="intake-cta-badge-dot" style="background:var(--coral);box-shadow:0 0 8px rgba(252,93,65,0.6);"></span> Free Assessment
+        </div>
+        <h3 class="intake-cta-heading">Discover where your business stands on the AI Journey</h3>
+        <p class="intake-cta-desc">Get a personalized AI readiness report in minutes. Understand your gaps and your next steps.</p>
+      </div>
+      <div class="intake-cta-right">
+        <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="intake-cta-btn">Get Your Free AI Report →</a>
+        <span class="intake-cta-footnote">Takes less than 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .ai-report-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 48px; flex-wrap: wrap;
+    background: #ffffff; border: 1.5px solid var(--border);
+    border-radius: 24px; padding: 40px 44px;
+    position: relative; overflow: hidden;
+  }
+  .ai-report-strip::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--grad-primary);
+  }
+  .ai-report-strip::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(252,93,65,0.04), transparent 60%);
+  }
+  .intake-cta-badge { display: inline-flex; align-items: center; gap: 7px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .intake-cta-badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .intake-cta-heading { font-family: 'Lato', sans-serif; font-size: clamp(20px, 2vw, 26px); font-weight: 900; letter-spacing: -0.02em; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
+  .intake-cta-desc { font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 300; color: var(--text-secondary); line-height: 1.65; max-width: 480px; }
+  .intake-cta-right { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; position: relative; z-index: 1; }
+  .intake-cta-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--grad-primary); color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; padding: 15px 32px; border-radius: 999px; text-decoration: none; letter-spacing: -0.01em; box-shadow: 0 6px 24px rgba(252,93,65,0.32); transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
+  .intake-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(252,93,65,0.48); }
+  .intake-cta-footnote { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-muted); text-align: center; }
+  @media (max-width: 768px) {
+    .ai-report-strip { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ FINAL CTA ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="final-cta" class="section-wrap">
+  <div class="cta-inner">
+    <h2 class="cta-h2 fade-up">The next stage of adoption<br><span style="font-weight:300;color:rgba(255,255,255,0.45);">is not more documentation.</span></h2>
+    <p class="cta-sub fade-up">It is guidance delivered the moment someone needs it. Revinova turns customer education from a cost that grows with every account into an advantage that compounds.</p>
+    <div class="cta-buttons fade-up">
+      <a target="_blank" href="https://bookings.cloud.microsoft/bookwithme/user/4fa74e3ccc5c401699a4e561195bf4e2%40revinova.com?anonymous&ismsaljsauthenabled" class="btn-primary" style="font-size:16px;padding:16px 36px;">Request a Demo →</a>
+      <a href="https://cja.3d8.myftpupload.com/pricing-v2/" class="btn-ghost" style="font-size:16px;padding:16px 32px;">View Pricing</a>
+    </div>
+    <div class="cta-trust fade-up">Built on AWS Bedrock · SOC 2 Type II · HIPAA Ready · Zero hallucinations</div>
+  </div>
+</section>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revinova.ai — Style Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: #f5f5f7; color: #1d1d1f; -webkit-font-smoothing: antialiased; }
+
+    :root {
+      --coral:          #FC5D41;
+      --coral-dark:     #e04c32;
+      --magenta:        #E551F3;
+      --pink:           #E953D0;
+      --pink-lt:        #FF76E8;
+      --grad-primary:   linear-gradient(135deg, #FC5D41, #E551F3);
+      --grad-secondary: linear-gradient(135deg, #E953D0, #FF76E8);
+      --text:           #1d1d1f;
+      --text-secondary: rgba(29,29,31,0.60);
+      --text-muted:     rgba(29,29,31,0.40);
+      --border:         rgba(0,0,0,0.08);
+      --dark-bg:        #0d0b1e;
+      --surface:        #f5f5f7;
+    }
+
+    /* Layout */
+    .sg-page { max-width: 1100px; margin: 0 auto; padding: 60px 40px 120px; }
+    .sg-section { margin-bottom: 80px; }
+    .sg-title {
+      font-family: 'Lato', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase; color: var(--coral);
+      margin-bottom: 24px; display: flex; align-items: center; gap: 10px;
+    }
+    .sg-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    .sg-label { font-size: 11px; font-weight: 600; color: var(--text-muted); letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 8px; margin-top: 24px; }
+    .sg-value { font-size: 12px; font-family: 'Inter', sans-serif; color: var(--text-secondary); margin-top: 4px; }
+    .sg-row { display: flex; flex-wrap: wrap; gap: 16px; align-items: flex-start; }
+    .sg-col { flex: 1; min-width: 200px; }
+
+    /* Page header */
+    .sg-header {
+      background: var(--dark-bg); color: #fff;
+      padding: 60px 40px; margin-bottom: 60px;
+    }
+    .sg-header-inner { max-width: 1100px; margin: 0 auto; }
+    .sg-header h1 { font-family: 'Lato', sans-serif; font-size: 40px; font-weight: 900; letter-spacing: -0.03em; margin-bottom: 8px; }
+    .sg-header p { color: rgba(255,255,255,0.50); font-size: 15px; }
+    .sg-grad { background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+
+    /* Colors */
+    .color-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 16px; }
+    .color-swatch { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .color-block { height: 80px; }
+    .color-info { padding: 12px 14px; background: #fff; }
+    .color-name { font-size: 13px; font-weight: 700; color: var(--text); }
+    .color-hex { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-top: 2px; }
+
+    /* Typography */
+    .type-sample { background: #fff; border-radius: 20px; padding: 32px 36px; border: 1px solid var(--border); margin-bottom: 16px; }
+    .type-sample.dark { background: var(--dark-bg); }
+    .type-meta { font-size: 11px; color: var(--text-muted); font-family: monospace; margin-bottom: 12px; }
+
+    /* Buttons */
+    .btn-row { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 32px 36px; background: #fff; border-radius: 20px; border: 1px solid var(--border); margin-bottom: 12px; }
+    .btn-row.dark { background: var(--dark-bg); }
+
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--grad-primary); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700;
+      padding: 14px 28px; border-radius: 999px; text-decoration: none;
+      box-shadow: 0 4px 16px rgba(252,93,65,0.28);
+      transition: transform 0.2s, box-shadow 0.2s; border: none; cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(252,93,65,0.45); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.10); color: #fff;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      padding: 14px 28px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.20);
+      text-decoration: none; transition: background 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+
+    .btn-outline-dark {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: #1d1d1f;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 600;
+      padding: 14px 28px; border-radius: 999px; border: 1.5px solid rgba(29,29,31,0.25);
+      text-decoration: none; transition: border-color 0.2s, background 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .btn-outline-dark:hover { border-color: rgba(29,29,31,0.5); background: rgba(29,29,31,0.05); transform: translateY(-1px); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent; color: var(--text);
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;
+      padding: 14px 24px; border-radius: 999px; border: 1.5px solid rgba(0,0,0,0.12);
+      text-decoration: none; transition: background 0.2s, border-color 0.2s, transform 0.2s; cursor: pointer;
+    }
+    .btn-secondary:hover { background: #f5f5f7; border-color: rgba(0,0,0,0.20); transform: translateY(-1px); }
+
+    /* Eyebrow */
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral);
+    }
+    .eyebrow-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--coral); flex-shrink: 0; }
+    .eyebrow.on-dark { color: rgba(255,255,255,0.35); }
+    .eyebrow.on-dark .eyebrow-dot { background: rgba(255,255,255,0.35); }
+
+    /* Gradients */
+    .grad-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .grad-swatch { height: 100px; border-radius: 16px; display: flex; align-items: flex-end; padding: 14px 16px; }
+    .grad-name { font-size: 12px; font-weight: 700; color: #fff; }
+
+    /* Spacing */
+    .spacing-row { display: flex; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+    .spacing-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .spacing-block { background: var(--coral); opacity: 0.25; border-radius: 4px; width: 40px; }
+    .spacing-val { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: monospace; }
+
+    /* Radius */
+    .radius-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .radius-item { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+    .radius-block { width: 80px; height: 80px; background: #fff; border: 2px solid var(--coral); }
+    .radius-val { font-size: 11px; font-weight: 700; color: var(--text-muted); font-family: monospace; }
+
+    /* Animation tokens */
+    .anim-table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 16px; overflow: hidden; border: 1px solid var(--border); }
+    .anim-table th { background: #f5f5f7; font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text-muted); padding: 12px 16px; text-align: left; }
+    .anim-table td { padding: 12px 16px; font-size: 13px; border-top: 1px solid var(--border); font-family: monospace; }
+    .anim-table td:first-child { font-family: 'Inter', sans-serif; font-weight: 600; color: var(--text); }
+
+    /* Section h2 sample */
+    .section-h2 { font-family: 'Lato', sans-serif; font-size: clamp(32px, 3.8vw, 50px); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; color: var(--text); }
+    .section-h2.on-dark { color: #fff; }
+
+    /* Shadow samples */
+    .shadow-row { display: flex; flex-wrap: wrap; gap: 20px; }
+    .shadow-item { background: #fff; border-radius: 16px; padding: 24px 28px; min-width: 160px; text-align: center; }
+    .shadow-name { font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+    .shadow-val { font-size: 10px; font-family: monospace; color: var(--text-muted); }
+  </style>
+</head>
+<body>
+
+<div class="sg-header">
+  <div class="sg-header-inner">
+    <h1><span class="sg-grad">Revinova.ai</span> Style Guide</h1>
+    <p>Design tokens, typography, components, and patterns used across all pages.</p>
+  </div>
+</div>
+
+<div class="sg-page">
+
+  <!-- COLORS -->
+  <div class="sg-section">
+    <div class="sg-title">Colours</div>
+
+    <div class="sg-label">Brand Colours</div>
+    <div class="color-grid" style="margin-top:12px;">
+      <div class="color-swatch">
+        <div class="color-block" style="background:#FC5D41;"></div>
+        <div class="color-info"><div class="color-name">Coral</div><div class="color-hex">--coral · #FC5D41</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#E551F3;"></div>
+        <div class="color-info"><div class="color-name">Magenta</div><div class="color-hex">--magenta · #E551F3</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#E953D0;"></div>
+        <div class="color-info"><div class="color-name">Pink</div><div class="color-hex">--pink · #E953D0</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#FF76E8;"></div>
+        <div class="color-info"><div class="color-name">Pink Light</div><div class="color-hex">--pink-lt · #FF76E8</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#e04c32;"></div>
+        <div class="color-info"><div class="color-name">Coral Dark</div><div class="color-hex">--coral-dark · #e04c32</div></div>
+      </div>
+    </div>
+
+    <div class="sg-label">Backgrounds</div>
+    <div class="color-grid" style="margin-top:12px;">
+      <div class="color-swatch">
+        <div class="color-block" style="background:#0d0b1e; border-bottom:1px solid rgba(255,255,255,0.08);"></div>
+        <div class="color-info"><div class="color-name">Dark</div><div class="color-hex">--dark-bg · #0d0b1e</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#ffffff; border-bottom:1px solid #eee;"></div>
+        <div class="color-info"><div class="color-name">White</div><div class="color-hex">#ffffff</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:#f5f5f7; border-bottom:1px solid #eee;"></div>
+        <div class="color-info"><div class="color-name">Surface / Gray</div><div class="color-hex">--surface · #f5f5f7</div></div>
+      </div>
+    </div>
+
+    <div class="sg-label">Text Colours</div>
+    <div class="color-grid" style="margin-top:12px;">
+      <div class="color-swatch">
+        <div class="color-block" style="background:#1d1d1f;"></div>
+        <div class="color-info"><div class="color-name">Primary</div><div class="color-hex">--text · #1d1d1f</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:rgba(29,29,31,0.60);"></div>
+        <div class="color-info"><div class="color-name">Secondary</div><div class="color-hex">--text-secondary · 60%</div></div>
+      </div>
+      <div class="color-swatch">
+        <div class="color-block" style="background:rgba(29,29,31,0.40);"></div>
+        <div class="color-info"><div class="color-name">Muted</div><div class="color-hex">--text-muted · 40%</div></div>
+      </div>
+    </div>
+
+    <div class="sg-label">Gradients</div>
+    <div class="grad-grid" style="margin-top:12px;">
+      <div class="grad-swatch" style="background:linear-gradient(135deg,#FC5D41,#E551F3);">
+        <div class="grad-name">--grad-primary<br><span style="font-weight:400;opacity:0.8;">#FC5D41 → #E551F3</span></div>
+      </div>
+      <div class="grad-swatch" style="background:linear-gradient(135deg,#E953D0,#FF76E8);">
+        <div class="grad-name">--grad-secondary<br><span style="font-weight:400;opacity:0.8;">#E953D0 → #FF76E8</span></div>
+      </div>
+      <div class="grad-swatch" style="background:linear-gradient(135deg,#2a0a3e,#1a0630); border:1px solid rgba(255,255,255,0.08);">
+        <div class="grad-name">Float Banner BG<br><span style="font-weight:400;opacity:0.8;">#2a0a3e → #1a0630</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TYPOGRAPHY -->
+  <div class="sg-section">
+    <div class="sg-title">Typography</div>
+
+    <div class="sg-row" style="margin-bottom:16px;">
+      <div class="sg-col">
+        <div class="sg-label">Fonts</div>
+        <div style="background:#fff;border-radius:16px;padding:24px 28px;border:1px solid var(--border);margin-top:12px;">
+          <div style="font-family:'Lato',sans-serif;font-size:28px;font-weight:900;margin-bottom:4px;">Lato</div>
+          <div style="font-size:12px;color:var(--text-muted);">Headings · Weights: 300, 400, 700, 900</div>
+          <div style="font-family:'Inter',sans-serif;font-size:28px;font-weight:700;margin-top:20px;margin-bottom:4px;">Inter</div>
+          <div style="font-size:12px;color:var(--text-muted);">UI / Labels / Buttons · Weights: 400, 500, 600, 700, 800</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-label">Hero Heading (Light BG)</div>
+    <div class="type-sample" style="margin-top:12px;">
+      <div class="type-meta">Lato 900 · clamp(36px, 4.5vw, 58px) · letter-spacing -0.03em</div>
+      <div style="font-family:'Lato',sans-serif;font-size:clamp(36px,4.5vw,58px);font-weight:900;line-height:1.08;letter-spacing:-0.03em;color:#1d1d1f;">Purpose-built AI agents.</div>
+      <div style="font-family:'Lato',sans-serif;font-size:clamp(32px,4vw,54px);line-height:1.1;letter-spacing:-0.02em;color:rgba(29,29,31,0.30);">Built for every workflow.</div>
+    </div>
+
+    <div class="sg-label">Hero Heading (Dark BG)</div>
+    <div class="type-sample dark" style="margin-top:12px;">
+      <div class="type-meta" style="color:rgba(255,255,255,0.35);">Lato 900 · clamp(40px, 5vw, 60px) · letter-spacing -0.03em</div>
+      <div style="font-family:'Lato',sans-serif;font-size:clamp(40px,5vw,60px);font-weight:900;line-height:1.07;letter-spacing:-0.03em;color:#fff;">Trial-ready sites.<br>Protocol-consistent conduct.</div>
+    </div>
+
+    <div class="sg-label">Section H2 (Light BG)</div>
+    <div class="type-sample" style="margin-top:12px;">
+      <div class="type-meta">Lato 900 · clamp(32px, 3.8vw, 50px) · 2nd line font-weight:300</div>
+      <h2 class="section-h2">Many deviations are preventable<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">when the right information arrives in time.</span></h2>
+    </div>
+
+    <div class="sg-label">Section H2 (Dark BG)</div>
+    <div class="type-sample dark" style="margin-top:12px;">
+      <div class="type-meta" style="color:rgba(255,255,255,0.35);">Lato 900 · same size · 2nd line font-weight:300 · white at 45% opacity</div>
+      <h2 class="section-h2 on-dark">Sites that know more<br><span style="font-weight:300;color:rgba(255,255,255,0.45);">deviate less, activate faster.</span></h2>
+    </div>
+
+    <div class="sg-label">Gradient Text</div>
+    <div class="type-sample" style="margin-top:12px;">
+      <div class="type-meta">background: var(--grad-primary) · -webkit-background-clip: text</div>
+      <div style="font-family:'Lato',sans-serif;font-size:40px;font-weight:900;background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">the agents.</div>
+    </div>
+
+    <div class="sg-label">Eyebrow Labels</div>
+    <div class="type-sample" style="margin-top:12px;">
+      <div class="type-meta">Inter 700 · 12px · letter-spacing 0.10em · uppercase · coral</div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="eyebrow"><span class="eyebrow-dot"></span> The Revinova Solution</div>
+        <div style="background:var(--dark-bg);padding:16px 20px;border-radius:12px;display:inline-block;">
+          <div class="eyebrow on-dark"><span class="eyebrow-dot"></span> The Challenge</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="sg-label">Body / Description Text</div>
+    <div class="type-sample" style="margin-top:12px;">
+      <div class="type-meta">Lato · clamp(14px, 1.3vw, 16px) · color: --text-secondary</div>
+      <p style="font-family:'Lato',sans-serif;font-size:16px;color:rgba(29,29,31,0.60);line-height:1.65;max-width:560px;">Readiness.ai helps sites get trained, activated, and inspection-ready while giving study teams instant, source-cited, version-controlled answers from approved study documents and SOPs.</p>
+    </div>
+  </div>
+
+  <!-- BUTTONS -->
+  <div class="sg-section">
+    <div class="sg-title">Buttons</div>
+
+    <div class="btn-row">
+      <div>
+        <div class="sg-label" style="margin-top:0;">Primary</div>
+        <button class="btn-primary" style="margin-top:8px;">Request a Demo →</button>
+        <div class="sg-value">grad-primary bg · white text · 700 · border-radius 999px</div>
+      </div>
+      <div>
+        <div class="sg-label" style="margin-top:0;">Outline (Light BG)</div>
+        <button class="btn-outline-dark" style="margin-top:8px;">View Pricing</button>
+        <div class="sg-value">transparent · dark border · dark text · 600</div>
+      </div>
+      <div>
+        <div class="sg-label" style="margin-top:0;">Secondary</div>
+        <button class="btn-secondary" style="margin-top:8px;">Learn More</button>
+        <div class="sg-value">transparent · thin border · 500 weight</div>
+      </div>
+    </div>
+
+    <div class="btn-row dark" style="margin-top:12px;">
+      <div>
+        <div class="sg-label" style="margin-top:0;color:rgba(255,255,255,0.35);">Primary (on dark)</div>
+        <button class="btn-primary" style="margin-top:8px;">Request a Demo →</button>
+      </div>
+      <div>
+        <div class="sg-label" style="margin-top:0;color:rgba(255,255,255,0.35);">Ghost (on dark)</div>
+        <button class="btn-ghost" style="margin-top:8px;">View Pricing</button>
+        <div class="sg-value" style="color:rgba(255,255,255,0.35);">white 10% bg · white border · white text · 600</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SPACING -->
+  <div class="sg-section">
+    <div class="sg-title">Spacing Scale</div>
+    <div class="spacing-row" style="margin-top:16px;background:#fff;padding:28px 32px;border-radius:20px;border:1px solid var(--border);">
+      <div class="spacing-item"><div class="spacing-block" style="height:8px;"></div><div class="spacing-val">8px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:12px;"></div><div class="spacing-val">12px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:16px;"></div><div class="spacing-val">16px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:20px;"></div><div class="spacing-val">20px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:24px;"></div><div class="spacing-val">24px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:32px;"></div><div class="spacing-val">32px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:40px;"></div><div class="spacing-val">40px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:48px;"></div><div class="spacing-val">48px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:60px;"></div><div class="spacing-val">60px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:80px;"></div><div class="spacing-val">80px</div></div>
+      <div class="spacing-item"><div class="spacing-block" style="height:100px;"></div><div class="spacing-val">100px</div></div>
+    </div>
+    <div class="sg-value" style="margin-top:10px;">Section inner padding: 80–100px top/bottom · Max width: 1160px · Page padding: 40px sides</div>
+  </div>
+
+  <!-- BORDER RADIUS -->
+  <div class="sg-section">
+    <div class="sg-title">Border Radius</div>
+    <div class="radius-row" style="margin-top:16px;background:#fff;padding:28px 32px;border-radius:20px;border:1px solid var(--border);">
+      <div class="radius-item"><div class="radius-block" style="border-radius:8px;"></div><div class="radius-val">8px · tags</div></div>
+      <div class="radius-item"><div class="radius-block" style="border-radius:12px;"></div><div class="radius-val">12px · small cards</div></div>
+      <div class="radius-item"><div class="radius-block" style="border-radius:16px;"></div><div class="radius-val">16px · cards</div></div>
+      <div class="radius-item"><div class="radius-block" style="border-radius:20px;"></div><div class="radius-val">20px · sections</div></div>
+      <div class="radius-item"><div class="radius-block" style="border-radius:24px;"></div><div class="radius-val">24px · large panels</div></div>
+      <div class="radius-item"><div class="radius-block" style="border-radius:999px;height:48px;"></div><div class="radius-val">999px · pills / buttons</div></div>
+    </div>
+  </div>
+
+  <!-- ANIMATIONS -->
+  <div class="sg-section">
+    <div class="sg-title">Animation Tokens</div>
+    <table class="anim-table" style="margin-top:16px;">
+      <thead><tr><th>Token</th><th>Value</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td>fade-up</td><td>opacity 0→1 + translateY(28px→0) · 0.7s</td><td>All scroll-reveal elements</td></tr>
+        <tr><td>easing</td><td>cubic-bezier(0.16, 1, 0.3, 1)</td><td>All transitions</td></tr>
+        <tr><td>stagger d1–d6</td><td>0.08s · 0.16s · 0.24s · 0.32s · 0.40s · 0.48s</td><td>Card/grid stagger delays</td></tr>
+        <tr><td>hover lift</td><td>translateY(-2px) · 0.2s</td><td>Buttons, cards</td></tr>
+        <tr><td>hover lift sm</td><td>translateY(-1px) · 0.2s</td><td>Ghost / secondary buttons</td></tr>
+        <tr><td>float banner</td><td>opacity + translateY · 1.2s · cubic-bezier(0.16,1,0.3,1)</td><td>Floating bottom banner</td></tr>
+        <tr><td>btn pulse</td><td>box-shadow glow · 2s ease-in-out infinite</td><td>Float banner CTA button</td></tr>
+        <tr><td>dot pulse</td><td>scale + opacity · 2s ease-in-out infinite</td><td>Eyebrow live dots</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- SHADOWS -->
+  <div class="sg-section">
+    <div class="sg-title">Shadows</div>
+    <div class="shadow-row" style="margin-top:16px;">
+      <div class="shadow-item" style="box-shadow:0 2px 8px rgba(0,0,0,0.06);">
+        <div class="shadow-name">Subtle</div>
+        <div class="shadow-val">0 2px 8px rgba(0,0,0,0.06)</div>
+      </div>
+      <div class="shadow-item" style="box-shadow:0 4px 16px rgba(252,93,65,0.28);">
+        <div class="shadow-name">Coral</div>
+        <div class="shadow-val">0 4px 16px rgba(coral,0.28)</div>
+      </div>
+      <div class="shadow-item" style="box-shadow:0 8px 28px rgba(252,93,65,0.45);">
+        <div class="shadow-name">Coral Hover</div>
+        <div class="shadow-val">0 8px 28px rgba(coral,0.45)</div>
+      </div>
+      <div class="shadow-item" style="box-shadow:0 12px 40px rgba(0,0,0,0.08);">
+        <div class="shadow-name">Card Hover</div>
+        <div class="shadow-val">0 12px 40px rgba(0,0,0,0.08)</div>
+      </div>
+      <div class="shadow-item" style="box-shadow:0 8px 40px rgba(0,0,0,0.40),0 2px 8px rgba(252,93,65,0.15);">
+        <div class="shadow-name">Float Banner</div>
+        <div class="shadow-val">0 8px 40px rgba(0,0,0,0.40)<br>+ coral glow</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PATTERNS -->
+  <div class="sg-section">
+    <div class="sg-title">Key Patterns</div>
+    <div style="background:#fff;border-radius:20px;padding:32px 36px;border:1px solid var(--border);">
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <thead><tr style="border-bottom:1px solid var(--border);">
+          <th style="text-align:left;padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Pattern</th>
+          <th style="text-align:left;padding:8px 12px;font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--text-muted);">Description</th>
+        </tr></thead>
+        <tbody>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">Section structure</td><td style="padding:12px;color:var(--text-secondary);">Eyebrow → H2 (bold + light 2nd line) → Body → Component</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">Dark / Light alternation</td><td style="padding:12px;color:var(--text-secondary);">Pages alternate between #0d0b1e dark and #ffffff or #f5f5f7 light sections</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">AI Report Strip</td><td style="padding:12px;color:var(--text-secondary);">White card with grad-primary top border · badge + heading + desc + CTA button · used above bottom CTA on all pages</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">Float Banner</td><td style="padding:12px;color:var(--text-secondary);">Fixed bottom · dark purple bg · icon + text + coral CTA · responsive: pill on desktop, bottom sheet on mobile</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">Bottom CTA</td><td style="padding:12px;color:var(--text-secondary);">White bg · centered · Eyebrow + H2 + sub + btn-primary + btn-outline-dark · "revinova.com" URL label below</td></tr>
+          <tr style="border-bottom:1px solid var(--border);"><td style="padding:12px;">Grid overlay</td><td style="padding:12px;color:var(--text-secondary);">Subtle 80×80px grid lines on hero sections via CSS background-image + rgba(0,0,0,0.025)</td></tr>
+          <tr><td style="padding:12px;">Border</td><td style="padding:12px;color:var(--text-secondary);">--border: rgba(0,0,0,0.08) · 1px or 1.5px solid · used on cards, inputs, dividers</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

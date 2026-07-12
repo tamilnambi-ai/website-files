@@ -1,0 +1,1715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revinova.ai — For Site Management Organizations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    :root {
+      --coral:          #FC5D41;
+      --coral-dark:     #e04c32;
+      --magenta:        #E551F3;
+      --pink:           #E953D0;
+      --pink-lt:        #FF76E8;
+      --violet:         #8b5cf6;
+      --indigo:         #6366f1;
+      --grad-primary:   linear-gradient(135deg, #FC5D41, #E551F3);
+      --grad-secondary: linear-gradient(135deg, #E953D0, #FF76E8);
+      --text:           #1d1d1f;
+      --text-secondary: rgba(29,29,31,0.60);
+      --text-muted:     rgba(29,29,31,0.40);
+      --surface:        #f5f5f7;
+      --surface-dark:   #0d0b1e;
+      --border:         rgba(0,0,0,0.08);
+    }
+
+    /* ── Scroll animations ── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.08s; }
+    .fade-up.d2 { transition-delay: 0.16s; }
+    .fade-up.d3 { transition-delay: 0.24s; }
+    .fade-up.d4 { transition-delay: 0.32s; }
+    .fade-up.d5 { transition-delay: 0.40s; }
+    .fade-up.d6 { transition-delay: 0.48s; }
+
+    /* ── Shared ── */
+    .section-wrap { position: relative; overflow: hidden; }
+    .section-inner {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 100px 40px;
+    }
+    .section-gray  { background: #f5f5f7; }
+    .section-dark  { background: #0d0b1e; }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--coral);
+      margin-bottom: 20px;
+    }
+    .eyebrow-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--coral);
+      flex-shrink: 0;
+    }
+    .eyebrow.on-dark        { color: rgba(255,255,255,0.35); }
+    .eyebrow.on-dark .eyebrow-dot { background: rgba(255,255,255,0.35); }
+
+    .section-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(32px, 3.8vw, 50px);
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+    .section-h2.on-dark { color: #ffffff; }
+
+    .section-lead {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.5vw, 18px);
+      font-weight: 300;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin-top: 16px;
+      max-width: 680px;
+    }
+    .section-lead.on-dark { color: rgba(255,255,255,0.50); }
+
+    .grad-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    /* ── Buttons ── */
+    .btn-primary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--grad-primary);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 700;
+      padding: 14px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      box-shadow: 0 4px 16px rgba(252,93,65,0.28);
+      transition: transform 0.2s cubic-bezier(0.4,0,0.2,1), box-shadow 0.2s ease;
+      border: none; cursor: pointer;
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(252,93,65,0.45); }
+
+    .btn-secondary {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: transparent;
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 500;
+      padding: 14px 24px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(0,0,0,0.12);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-secondary:hover { background: #f5f5f7; border-color: rgba(0,0,0,0.20); transform: translateY(-1px); }
+
+    .btn-ghost {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(255,255,255,0.10);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px; font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.20);
+      text-decoration: none;
+      letter-spacing: -0.01em;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn-ghost:hover { background: rgba(255,255,255,0.18); transform: translateY(-1px); }
+
+    /* ── Card base ── */
+    .card-light {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px;
+      padding: 32px 28px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .card-light:hover {
+      border-color: rgba(252,93,65,0.25);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+      transform: translateY(-3px);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HERO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #hero {
+      position: relative;
+      width: 100%;
+      height: 100vh; min-height: 720px;
+      display: flex; align-items: center;
+      overflow: hidden;
+      background: #ffffff;
+    }
+    #hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(0,0,0,0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.035) 1px, transparent 1px);
+      background-size: 80px 80px;
+      z-index: 1; pointer-events: none;
+    }
+    .blob {
+      position: absolute; border-radius: 50%;
+      filter: blur(110px); pointer-events: none; will-change: transform;
+    }
+    .blob-1 { width:640px;height:640px; background:#FC5D41; top:-15%;left:-10%; opacity:0.06; animation:blobFloat 16s ease-in-out infinite; }
+    .blob-2 { width:520px;height:520px; background:#E551F3; top:20%;right:-10%; opacity:0.05; animation:blobFloat 20s ease-in-out infinite -5s; }
+    .blob-3 { width:420px;height:420px; background:#E953D0; bottom:-10%;left:35%; opacity:0.07; animation:blobFloat 22s ease-in-out infinite -10s; }
+    @keyframes blobFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33% { transform: translate(24px,-16px) scale(1.04); }
+      66% { transform: translate(-16px,24px) scale(0.96); }
+    }
+    .ray {
+      position: absolute; top:-10%; width:1px; height:120%;
+      background: linear-gradient(to bottom, transparent, rgba(252,93,65,0.10), transparent);
+      animation: rayMove 9s ease-in-out infinite; pointer-events: none;
+    }
+    .ray:nth-child(4) { left:15%; }
+    .ray:nth-child(5) { left:38%; animation-delay:-3s; width:2px; background:linear-gradient(to bottom,transparent,rgba(229,81,243,0.07),transparent); }
+    .ray:nth-child(6) { left:67%; animation-delay:-6s; }
+    @keyframes rayMove {
+      0%,100% { opacity:0.35; transform:scaleX(1); }
+      50%      { opacity:0.85; transform:scaleX(1.8); }
+    }
+
+    .hero-inner {
+      position: relative; z-index: 10;
+      width: 100%; max-width: 1160px;
+      margin: 0 auto; padding: 0 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 72px; align-items: center;
+    }
+    .hero-left {
+      display: flex; flex-direction: column;
+      animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.2s both;
+    }
+    .hero-right { animation: fadeUp 0.9s cubic-bezier(0.16,1,0.3,1) 0.45s both; }
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(28px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 24px;
+    }
+    .hero-eyebrow-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--coral);
+      box-shadow: 0 0 8px rgba(252,93,65,0.6);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 8px rgba(252,93,65,0.5); }
+      50%     { opacity:0.7; transform:scale(1.3); box-shadow:0 0 14px rgba(252,93,65,0); }
+    }
+
+    .hero-h1 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(40px, 5vw, 60px);
+      font-weight: 900; line-height: 1.07;
+      letter-spacing: -0.03em; color: var(--text);
+      margin-bottom: 8px;
+    }
+    .hero-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.4vw, 17px);
+      font-weight: 300; line-height: 1.7;
+      color: var(--text-secondary);
+      margin-top: 20px; margin-bottom: 36px;
+      max-width: 500px;
+    }
+    .hero-cta { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .hero-chips {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      margin-bottom: 32px;
+    }
+    .hero-chip {
+      display: inline-flex; align-items: center;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px; font-weight: 600;
+      padding: 7px 16px;
+      border-radius: 999px;
+      background: rgba(252,93,65,0.07);
+      border: 1.5px solid rgba(252,93,65,0.22);
+      color: var(--coral);
+      letter-spacing: -0.01em;
+    }
+
+    .hero-footnote {
+      margin-top: 28px;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px; color: var(--text-muted);
+    }
+
+    /* CTMS widget */
+    .ctms-widget {
+      background: #ffffff;
+      border: 1.5px solid rgba(0,0,0,0.09);
+      border-radius: 20px; overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.10), 0 4px 16px rgba(0,0,0,0.05);
+    }
+    .ctms-header {
+      background: #0d0b1e; padding: 16px 20px;
+      display: flex; align-items: center; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .ctms-header::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 100% at 20% 50%, rgba(139,92,246,0.30), transparent 60%);
+      pointer-events: none;
+    }
+    .ctms-context {
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+      color: rgba(255,255,255,0.90); position: relative; z-index: 1;
+    }
+    .ctms-meta {
+      font-family: 'Inter', sans-serif; font-size: 11px;
+      color: rgba(255,255,255,0.40); margin-top: 3px; position: relative; z-index: 1;
+    }
+    .ctms-status {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      color: #22c55e; position: relative; z-index: 1;
+    }
+    .ctms-status-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: #22c55e; box-shadow: 0 0 6px rgba(34,197,94,0.7);
+      animation: dotPulse 2s ease-in-out infinite;
+    }
+    .ctms-body { padding: 20px; display: flex; flex-direction: column; gap: 12px; height: 340px; overflow-y: auto; }
+    .ctms-body::-webkit-scrollbar { width: 4px; }
+    .ctms-body::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.10); border-radius: 4px; }
+    /* Typing indicator */
+    .ctms-typing {
+      display: flex; align-items: center; gap: 4px;
+      background: linear-gradient(135deg, rgba(252,93,65,0.06), rgba(229,81,243,0.06));
+      border: 1px solid rgba(252,93,65,0.14);
+      border-radius: 12px 12px 4px 12px;
+      padding: 12px 16px; align-self: flex-end;
+    }
+    .ctms-typing span {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--coral); opacity: 0.5;
+      animation: typingDot 1.2s ease-in-out infinite;
+    }
+    .ctms-typing span:nth-child(2) { animation-delay: 0.2s; }
+    .ctms-typing span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingDot {
+      0%,60%,100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-5px); opacity: 1; }
+    }
+    /* Chat message animation */
+    .ctms-msg { opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease; }
+    .ctms-msg.show { opacity: 1; transform: translateY(0); }
+    .ctms-question {
+      background: #f5f5f7; border-radius: 12px 12px 12px 4px;
+      padding: 11px 16px; align-self: flex-start; max-width: 88%;
+      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
+      color: var(--text);
+    }
+    .ctms-answer {
+      background: linear-gradient(135deg, rgba(252,93,65,0.06), rgba(229,81,243,0.06));
+      border: 1px solid rgba(252,93,65,0.14);
+      border-radius: 12px 12px 4px 12px;
+      padding: 14px 16px; align-self: flex-end; max-width: 94%;
+    }
+    .ctms-answer-text {
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      color: var(--text); line-height: 1.55;
+    }
+    .ctms-source {
+      display: inline-flex; align-items: center; gap: 5px;
+      margin-top: 10px;
+      background: rgba(252,93,65,0.08);
+      border: 1px solid rgba(252,93,65,0.18);
+      border-radius: 999px; padding: 3px 10px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      color: var(--coral);
+    }
+    .ctms-input-row {
+      border-top: 1px solid var(--border); padding: 14px 20px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .ctms-input-text {
+      flex: 1; font-family: 'Inter', sans-serif;
+      font-size: 13px; color: var(--text-muted);
+    }
+    .ctms-send-btn {
+      width: 30px; height: 30px;
+      background: var(--grad-primary);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       ADOPTION TRAP
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #adoption-trap {
+      background: #0d0b1e; overflow: hidden; position: relative;
+    }
+    #adoption-trap::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 20%, rgba(252,93,65,0.08), transparent 60%),
+        radial-gradient(ellipse 50% 60% at 20% 80%, rgba(139,92,246,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px; margin: 56px 0;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px; padding: 28px 24px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .stat-card:hover { background: rgba(255,255,255,0.07); border-color: rgba(252,93,65,0.22); }
+    .stat-number {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(36px, 4vw, 52px);
+      font-weight: 900; letter-spacing: -0.03em;
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      line-height: 1; margin-bottom: 12px;
+    }
+    .stat-label {
+      font-family: 'Inter', sans-serif; font-size: 13px;
+      color: rgba(255,255,255,0.55); line-height: 1.55;
+    }
+    .stat-citation {
+      margin-top: 10px; font-family: 'Inter', sans-serif;
+      font-size: 10.5px; color: rgba(255,255,255,0.22); line-height: 1.4;
+    }
+    .adoption-close {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(17px, 1.8vw, 22px); font-weight: 400;
+      color: rgba(255,255,255,0.50); max-width: 800px; line-height: 1.7;
+      border-top: 1px solid rgba(255,255,255,0.07); padding-top: 40px;
+    }
+    .adoption-close em { color: rgba(255,255,255,0.85); font-style: normal; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WHY DEVIATIONS HAPPEN
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .deviation-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .deviation-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .deviation-card::before {
+      content: ''; position: absolute; top:0;left:0;right:0; height:3px;
+      background: var(--grad-primary); opacity: 0; transition: opacity 0.3s;
+    }
+    .deviation-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .deviation-card:hover::before { opacity: 1; }
+    .deviation-num {
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 14px;
+    }
+    .deviation-title {
+      font-family: 'Lato', sans-serif; font-size: 18px; font-weight: 700;
+      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .deviation-body {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+    .deviation-note {
+      margin-top: 40px; background: #f5f5f7;
+      border-radius: 16px; padding: 28px 32px;
+      border-left: 3px solid var(--coral);
+      font-family: 'Lato', sans-serif; font-size: 15px;
+      color: var(--text-secondary); line-height: 1.7;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       THERE IS A BETTER WAY
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .better-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; margin-top: 56px;
+    }
+    .better-panel {
+      border-radius: 20px; padding: 36px 32px;
+    }
+    .better-light {
+      background: #ffffff; border: 1.5px solid var(--border);
+    }
+    .better-dark {
+      background: #0d0b1e; position: relative; overflow: hidden;
+    }
+    .better-dark::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 15% 20%, rgba(252,93,65,0.14), transparent 55%),
+        radial-gradient(ellipse 60% 70% at 85% 80%, rgba(139,92,246,0.18), transparent 55%);
+      pointer-events: none;
+    }
+    .better-label {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 16px;
+    }
+    .better-dark .better-label { color: rgba(255,255,255,0.35); }
+    .better-title {
+      font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 900;
+      letter-spacing: -0.02em; color: var(--text); margin-bottom: 10px;
+    }
+    .better-dark .better-title { color: #ffffff; position: relative; z-index: 1; }
+    .better-body {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.7;
+    }
+    .better-dark .better-body { color: rgba(255,255,255,0.50); position: relative; z-index: 1; }
+    .better-badge {
+      display: inline-block; margin-top: 20px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 600;
+      padding: 5px 14px; border-radius: 999px;
+    }
+    .badge-proven { background: rgba(252,93,65,0.10); color: var(--coral); border: 1px solid rgba(252,93,65,0.20); }
+    .badge-pilot  { background: rgba(255,255,255,0.10); color: rgba(255,255,255,0.75); border: 1px solid rgba(255,255,255,0.18); position: relative; z-index: 1; }
+    .better-arrow {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-muted); margin-top: 14px;
+    }
+    .better-bridge {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-family: 'Lato', sans-serif; font-size: 15px;
+      color: var(--text-secondary); line-height: 1.7;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SITE READINESS PLATFORM
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .readiness-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .readiness-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 28px 24px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .readiness-card:hover {
+      border-color: rgba(252,93,65,0.25);
+      box-shadow: 0 10px 32px rgba(0,0,0,0.07);
+      transform: translateY(-3px);
+    }
+    .readiness-icon {
+      width: 40px; height: 40px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(252,93,65,0.10), rgba(229,81,243,0.10));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 16px;
+    }
+    .readiness-title {
+      font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .readiness-body {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       AI BUILDS TRAINING
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .steps-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 0; margin-top: 56px; position: relative;
+    }
+    .steps-row::before {
+      content: ''; position: absolute;
+      top: 32px; left: calc(16.67% + 12px); right: calc(16.67% + 12px);
+      height: 1px;
+      background: linear-gradient(90deg, var(--coral), var(--magenta));
+      opacity: 0.25;
+    }
+    .step-item { padding: 0 20px; text-align: center; }
+    .step-circle {
+      width: 64px; height: 64px; border-radius: 50%;
+      background: #ffffff;
+      border: 1.5px solid rgba(252,93,65,0.22);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      font-family: 'Inter', sans-serif; font-size: 20px; font-weight: 800;
+      color: var(--coral); position: relative; z-index: 1;
+    }
+    .step-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px;
+    }
+    .step-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: var(--text-secondary); line-height: 1.6;
+    }
+    .benefits-row {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 16px; margin-top: 48px;
+    }
+    .benefit-card {
+      background: #f5f5f7;
+      border: 1.5px solid var(--border);
+      border-radius: 16px; padding: 24px 20px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .benefit-card:hover { border-color: rgba(252,93,65,0.22); box-shadow: 0 8px 24px rgba(0,0,0,0.06); transform: translateY(-2px); }
+    .benefit-icon {
+      width: 36px; height: 36px; border-radius: 10px;
+      background: linear-gradient(135deg, rgba(252,93,65,0.12), rgba(229,81,243,0.12));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; margin-bottom: 14px;
+    }
+    .benefit-title {
+      font-family: 'Lato', sans-serif; font-size: 14px; font-weight: 700;
+      color: var(--text); margin-bottom: 6px;
+    }
+    .benefit-body {
+      font-family: 'Lato', sans-serif; font-size: 13px;
+      color: var(--text-secondary); line-height: 1.6;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       HOW AGENT STAYS CORRECT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #agent-correct { background: #0d0b1e; overflow: hidden; position: relative; }
+    #agent-correct::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 5% 30%, rgba(139,92,246,0.18), transparent 60%),
+        radial-gradient(ellipse 60% 50% at 95% 70%, rgba(99,102,241,0.14), transparent 60%);
+      pointer-events: none;
+    }
+    .agent-grid {
+      display: grid; grid-template-columns: 1.15fr 1fr;
+      gap: 56px; align-items: start; margin-top: 56px;
+    }
+    .doc-pkg-title {
+      font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+      color: rgba(255,255,255,0.80); margin-bottom: 10px;
+    }
+    .doc-pkg-intro {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: rgba(255,255,255,0.42); line-height: 1.6; margin-bottom: 20px;
+    }
+    .doc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .doc-tag {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.10);
+      border-radius: 8px; padding: 6px 12px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 500;
+      color: rgba(255,255,255,0.60);
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .doc-tag:hover { background: rgba(255,255,255,0.10); border-color: rgba(252,93,65,0.28); color: rgba(255,255,255,0.90); }
+    .doc-version {
+      font-family: 'Inter', sans-serif; font-size: 11px;
+      color: rgba(255,255,255,0.24); line-height: 1.5;
+      border-top: 1px solid rgba(255,255,255,0.07); padding-top: 16px;
+    }
+    .agent-flow { display: flex; flex-direction: column; gap: 12px; }
+    .agent-flow-item {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 14px; padding: 18px 20px;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .agent-flow-item:hover { background: rgba(255,255,255,0.07); border-color: rgba(139,92,246,0.28); }
+    .agent-flow-label {
+      font-family: 'Inter', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: rgba(255,255,255,0.30); margin-bottom: 6px;
+    }
+    .agent-flow-text {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: rgba(255,255,255,0.65); line-height: 1.55;
+    }
+    .agent-why {
+      grid-column: 1 / -1; margin-top: 40px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(252,93,65,0.14);
+      border-radius: 16px; padding: 28px 32px; position: relative;
+    }
+    .agent-why::before {
+      content: ''; position: absolute; top:0;left:0;right:0; height:2px;
+      background: var(--grad-primary); border-radius: 16px 16px 0 0;
+    }
+    .agent-why p {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: rgba(255,255,255,0.50); line-height: 1.75;
+    }
+    .agent-why strong { color: rgba(255,255,255,0.80); font-weight: 700; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       NOT ANOTHER LOGIN
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .login-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .login-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .login-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .login-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(252,93,65,0.10), rgba(229,81,243,0.10));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 18px;
+    }
+    .login-title {
+      font-family: 'Lato', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .login-body {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       IT GUIDES BECAUSE IT KNOWS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .guides-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px; margin-top: 56px;
+    }
+    .guides-panel {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+    }
+    .guides-label {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+      color: var(--coral); margin-bottom: 20px;
+    }
+    .guides-list { list-style: none; display: flex; flex-direction: column; gap: 13px; }
+    .guides-list li {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.6;
+      display: flex; align-items: flex-start; gap: 10px;
+    }
+    .guides-list li::before {
+      content: ''; width: 6px; height: 6px;
+      border-radius: 50%; background: var(--coral);
+      flex-shrink: 0; margin-top: 7px;
+    }
+    .guides-sealed {
+      grid-column: 1 / -1;
+      text-align: center;
+      background: #0d0b1e;
+      border-radius: 20px; padding: 28px 40px;
+      position: relative; overflow: hidden;
+    }
+    .guides-sealed::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse 60% 80% at 50% 50%, rgba(139,92,246,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .guides-sealed p {
+      font-family: 'Lato', sans-serif; font-size: 15px;
+      color: rgba(255,255,255,0.50); line-height: 1.65;
+      position: relative; z-index: 1;
+    }
+    .guides-sealed strong { color: rgba(255,255,255,0.85); font-weight: 700; }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       QUALITY TEAMS CAN TRUST IT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .quality-grid {
+      display: grid; grid-template-columns: repeat(2,1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .quality-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+      position: relative; overflow: hidden;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .quality-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .quality-num {
+      position: absolute; top: 20px; right: 24px;
+      font-family: 'Inter', sans-serif; font-size: 40px; font-weight: 900;
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      opacity: 0.18; line-height: 1;
+    }
+    .quality-title {
+      font-family: 'Lato', sans-serif; font-size: 17px; font-weight: 700;
+      color: var(--text); margin-bottom: 10px; letter-spacing: -0.01em;
+    }
+    .quality-body {
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+    .quality-compliance {
+      margin-top: 36px; background: #f5f5f7;
+      border-radius: 14px; padding: 20px 24px;
+      border-left: 3px solid rgba(252,93,65,0.30);
+      font-family: 'Inter', sans-serif; font-size: 12px;
+      color: var(--text-muted); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       A TUESDAY AT SITE 014
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #tuesday { background: #0d0b1e; overflow: hidden; position: relative; }
+    #tuesday::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 50% at 50% 0%, rgba(252,93,65,0.07), transparent 60%),
+        radial-gradient(ellipse 60% 70% at 10% 100%, rgba(139,92,246,0.10), transparent 60%);
+      pointer-events: none;
+    }
+    .tuesday-table {
+      margin-top: 56px;
+      border-radius: 20px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .tuesday-head {
+      display: grid; grid-template-columns: 1fr 1fr;
+    }
+    .tuesday-col {
+      padding: 18px 28px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase;
+    }
+    .tuesday-col.without { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.30); border-right: 1px solid rgba(255,255,255,0.07); }
+    .tuesday-col.with    { background: rgba(252,93,65,0.06); color: var(--coral); }
+    .tuesday-row { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid rgba(255,255,255,0.06); }
+    .tuesday-row:hover .tuesday-cell { background: rgba(255,255,255,0.025); }
+    .tuesday-cell {
+      padding: 32px 28px;
+      font-family: 'Lato', sans-serif; font-size: 14px;
+      line-height: 1.6; transition: background 0.2s;
+    }
+    .tuesday-cell.without { color: rgba(255,255,255,0.38); background: rgba(255,255,255,0.02); border-right: 1px solid rgba(255,255,255,0.06); }
+    .tuesday-cell.with    { color: rgba(255,255,255,0.70); background: rgba(252,93,65,0.03); }
+    .tuesday-cell.with strong { color: rgba(255,255,255,0.90); font-weight: 700; }
+    .tuesday-multiply {
+      margin-top: 40px; text-align: center;
+      font-family: 'Lato', sans-serif; font-size: clamp(15px, 1.6vw, 18px);
+      color: rgba(255,255,255,0.40); font-style: italic;
+      position: relative; z-index: 1;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       WHAT YOUR SMO GETS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .smo-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px; margin-top: 56px;
+    }
+    .smo-card {
+      background: #ffffff;
+      border: 1.5px solid var(--border);
+      border-radius: 20px; padding: 32px 28px;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.3s;
+    }
+    .smo-card:hover { border-color: rgba(252,93,65,0.25); box-shadow: 0 12px 40px rgba(0,0,0,0.07); transform: translateY(-3px); }
+    .smo-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      background: linear-gradient(135deg, rgba(252,93,65,0.10), rgba(229,81,243,0.10));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; margin-bottom: 18px;
+    }
+    .smo-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: var(--text); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .smo-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: var(--text-secondary); line-height: 1.65;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       PILOT
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #pilot { background: #0d0b1e; overflow: hidden; position: relative; }
+    #pilot::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 80% 20%, rgba(252,93,65,0.09), transparent 60%),
+        radial-gradient(ellipse 60% 70% at 20% 80%, rgba(139,92,246,0.13), transparent 60%);
+      pointer-events: none;
+    }
+    .pilot-intro {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.5vw, 18px); font-weight: 300;
+      color: rgba(255,255,255,0.50); line-height: 1.7;
+      max-width: 660px; margin-top: 20px;
+    }
+    .pilot-steps {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 20px; margin-top: 56px; position: relative;
+    }
+    .pilot-steps::before { display: none; }
+    .pilot-step {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; padding: 28px 24px;
+      position: relative; z-index: 1;
+      transition: background 0.3s, border-color 0.3s, transform 0.3s;
+    }
+    .pilot-step:hover { background: rgba(255,255,255,0.07); border-color: rgba(252,93,65,0.22); transform: translateY(-3px); }
+    .pilot-num {
+      width: 54px; height: 54px; border-radius: 50%;
+      background: rgba(252,93,65,0.10);
+      border: 1.5px solid rgba(252,93,65,0.22);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 20px;
+      font-family: 'Inter', sans-serif; font-size: 18px; font-weight: 800;
+      color: var(--coral); position: relative; z-index: 1;
+    }
+    .pilot-title {
+      font-family: 'Lato', sans-serif; font-size: 16px; font-weight: 700;
+      color: rgba(255,255,255,0.85); margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .pilot-body {
+      font-family: 'Lato', sans-serif; font-size: 13.5px;
+      color: rgba(255,255,255,0.42); line-height: 1.6;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       SCHEDULE DEMO
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    #schedule-demo { background: #ffffff; position: relative; overflow: hidden; }
+    #schedule-demo::before {
+      content: ''; position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 50% 100%, rgba(252,93,65,0.05), transparent 60%),
+        radial-gradient(ellipse 50% 40% at 0% 0%, rgba(229,81,243,0.04), transparent 60%);
+      pointer-events: none;
+    }
+    .demo-inner {
+      max-width: 1160px; margin: 0 auto;
+      padding: 120px 40px;
+      text-align: center; position: relative; z-index: 1;
+    }
+    .demo-logo {
+      display: inline-flex; align-items: center; gap: 10px;
+      margin-bottom: 40px;
+    }
+    .demo-logo-mark {
+      width: 40px; height: 40px;
+      background: var(--grad-primary);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .demo-logo-text {
+      font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 900;
+      color: var(--text); letter-spacing: -0.03em;
+    }
+    .demo-h2 {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(36px, 4.5vw, 56px);
+      font-weight: 900; line-height: 1.08;
+      letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px;
+    }
+    .demo-sub {
+      font-family: 'Lato', sans-serif;
+      font-size: clamp(15px, 1.4vw, 17px); font-weight: 300;
+      color: var(--text-secondary);
+      max-width: 440px; margin: 0 auto 40px; line-height: 1.65;
+    }
+    .demo-cta { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .demo-url { margin-top: 28px; font-family: 'Inter', sans-serif; font-size: 13px; color: var(--text-muted); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━
+       RESPONSIVE
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-width: 1024px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 56px; }
+      .hero-right { max-width: 560px; }
+      .stats-grid { grid-template-columns: repeat(2,1fr); }
+      .agent-grid { grid-template-columns: 1fr; gap: 40px; }
+      .smo-grid { grid-template-columns: repeat(2,1fr); }
+      .readiness-grid { grid-template-columns: repeat(2,1fr); }
+    }
+    @media (max-width: 768px) {
+      .section-inner { padding: 80px 24px; }
+      .better-grid,
+      .guides-grid,
+      .quality-grid,
+      .login-grid,
+      .deviation-grid { grid-template-columns: 1fr; }
+      .steps-row, .benefits-row, .pilot-steps { grid-template-columns: 1fr; }
+      .steps-row::before, .pilot-steps::before { display: none; }
+      .tuesday-cell { padding: 18px 18px; font-size: 13px; }
+      .hero-inner, .demo-inner { padding-left: 24px; padding-right: 24px; }
+    }
+    @media (max-width: 560px) {
+      #hero { height: auto; padding: 100px 0 60px; }
+      .stats-grid { grid-template-columns: 1fr; }
+      .smo-grid, .readiness-grid { grid-template-columns: 1fr; }
+      .tuesday-row { grid-template-columns: 1fr; }
+      .tuesday-cell:first-child {
+        border-bottom: 1px solid rgba(255,255,255,0.06);
+        background: rgba(255,255,255,0.03);
+        font-weight: 700;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ HERO ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="hero">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+  <div class="ray"></div>
+
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-eyebrow"><span class="hero-eyebrow-dot"></span> For Site Management Organizations</div>
+      <h1 class="hero-h1">
+        Trial-ready sites.<br>
+        <span class="grad-text">Protocol-consistent conduct.</span>
+      </h1>
+      <p class="hero-sub">The learning platform that gets sites trained and activation-ready, now with an AI learning agent for every trial, embedded in the CTMS your teams already work in.</p>
+      <div class="hero-chips">
+        <span class="hero-chip">Sourced, version-cited answers</span>
+        <span class="hero-chip">Less login friction</span>
+        <span class="hero-chip">Fewer preventable deviations</span>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="ctms-widget">
+        <div class="ctms-header">
+          <div>
+            <div class="ctms-context">Site 014 · Study RV-201</div>
+            <div class="ctms-meta">CRC role · Visit 3 window</div>
+          </div>
+          <div class="ctms-status">
+            <span class="ctms-status-dot"></span> Active
+          </div>
+        </div>
+        <div class="ctms-body" id="chat-body">
+          <!-- Messages injected by JS -->
+        </div>
+        <div class="ctms-input-row">
+          <div class="ctms-input-text">Ask anything in scope...</div>
+          <div class="ctms-send-btn">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M12 1L1 5l4.5 2L12 1zM5.5 7L7.5 12 12 1" stroke="white" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ ADOPTION TRAP ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="adoption-trap" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow on-dark fade-up"><span class="eyebrow-dot"></span> The Adoption Trap</div>
+    <h2 class="section-h2 on-dark fade-up">Your coordinators<br><span style="font-weight:300;color:rgba(255,255,255,0.55);">work in a maze</span></h2>
+    <div class="stats-grid">
+      <div class="stat-card fade-up d1">
+        <div class="stat-number">17</div>
+        <div class="stat-label">additional systems a typical oncology study layers on top of the site's own, each a new login</div>
+        <div class="stat-citation">Applied Clinical Trials (2025)</div>
+      </div>
+      <div class="stat-card fade-up d2">
+        <div class="stat-number">55%</div>
+        <div class="stat-label">of sites rank sponsor technology setup and training as their single greatest startup burden, above budgeting and contracting</div>
+        <div class="stat-citation">Advarra 2023 Study Activation Survey, 500+ sites</div>
+      </div>
+      <div class="stat-card fade-up d3">
+        <div class="stat-number">~70%</div>
+        <div class="stat-label">of sites report six or more separate logins per study, before counting decentralized and wearable tech</div>
+        <div class="stat-citation">Advarra 2023 Study Activation Survey</div>
+      </div>
+      <div class="stat-card fade-up d4">
+        <div class="stat-number">&gt;60%</div>
+        <div class="stat-label">of site professionals report staffing shortages, and new research staff can take up to a year to fully ramp</div>
+        <div class="stat-citation">2024 SCRS Site Landscape Survey; WCG</div>
+      </div>
+    </div>
+    <p class="adoption-close fade-up">Every one of those systems is one more login, one more password, one more place <em>the answer might be hiding.</em></p>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ WHY DEVIATIONS HAPPEN ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="why-deviations" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> Why Deviations Happen</div>
+    <h2 class="section-h2 fade-up">Many deviations are preventable<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">when the right information arrives in time.</span></h2>
+    <div class="deviation-grid">
+      <div class="deviation-card fade-up d1">
+        <div class="deviation-num">01</div>
+        <div class="deviation-title">The amendment lived in an email</div>
+        <div class="deviation-body">Protocol changes arrive by email and portal. Without version control and a clear effective date, staff misapply the change or work from a superseded version, and deviation risk spikes after every amendment.</div>
+      </div>
+      <div class="deviation-card fade-up d2">
+        <div class="deviation-num">02</div>
+        <div class="deviation-title">Training decays before it is used</div>
+        <div class="deviation-body">Site initiation training happens weeks before the procedure it covered. By Visit 3, retraining has not caught up to the moment the knowledge is needed.</div>
+      </div>
+      <div class="deviation-card fade-up d3">
+        <div class="deviation-num">03</div>
+        <div class="deviation-title">Turnover resets the clock</div>
+        <div class="deviation-body">Coordinator churn runs high industry-wide. Every departure takes trial knowledge with it; every new hire ramps mid-study, often without the full study document set at hand.</div>
+      </div>
+      <div class="deviation-card fade-up d4">
+        <div class="deviation-num">04</div>
+        <div class="deviation-title">Interpretation drifts across sites</div>
+        <div class="deviation-body">The same protocol gets read slightly differently at each site. Sponsor and CRO communication lag and uneven PI engagement widen the gap, and multi-site SMOs absorb it as monitoring findings, queries, and CAPAs.</div>
+      </div>
+    </div>
+    <div class="deviation-note fade-up">
+      People stay in the loop, so deviations will still happen. The goal is to reduce the preventable, information-driven ones: version-control failures, effective-date confusion, communication lag, and training decay.
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ THERE IS A BETTER WAY ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="better-way" class="section-wrap section-gray">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> There Is A Better Way</div>
+    <h2 class="section-h2 fade-up">A proven readiness base.<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">A new AI agent for every trial.</span></h2>
+    <div class="better-grid">
+      <div class="better-panel better-light fade-up d1">
+        <div class="better-label">The Base · Today</div>
+        <div class="better-title">Site readiness and activation</div>
+        <div class="better-body">The Revinova learning platform gets sites trained, activated, and demonstrably ready to operate: onboarding, GCP, processes, and your SOPs, tracked by person, site, and study.</div>
+        <div class="better-badge badge-proven">Proven and in production.</div>
+        <div class="better-arrow">extends into →</div>
+      </div>
+      <div class="better-panel better-dark fade-up d2">
+        <div class="better-label">The New Layer · The Pilot</div>
+        <div class="better-title">An AI learning agent per trial</div>
+        <div class="better-body">Each trial gets its own agent for live enablement and guidance, embedded in the CTMS. It draws on the current approved study documents at the point of work and supports staff through conduct, helping reduce preventable deviations.</div>
+        <div class="better-badge badge-pilot">What we are inviting you to pilot.</div>
+      </div>
+      <div class="better-bridge fade-up">
+        Readiness gets a site ready to operate. The per-trial agent carries approved knowledge into live conduct, where the deviations actually happen.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ SITE READINESS PLATFORM ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="site-readiness" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> Site Readiness Platform</div>
+    <h2 class="section-h2 fade-up">The learning platform gets sites<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">trained, activated, and demonstrably ready.</span></h2>
+    <p class="section-lead fade-up">Onboarding, GCP, processes, and your SOPs, tracked by person, site, and study. Proven and in production.</p>
+    <div class="readiness-grid">
+      <div class="readiness-card fade-up d1">
+        <div class="readiness-icon">🎓</div>
+        <div class="readiness-title">Readiness &amp; activation training</div>
+        <div class="readiness-body">Hosted by Revinova. Gets coordinators, investigators, and site staff ready to operate before the first visit.</div>
+      </div>
+      <div class="readiness-card fade-up d2">
+        <div class="readiness-icon">📝</div>
+        <div class="readiness-title">GCP, SOP, and onboarding tracking</div>
+        <div class="readiness-body">Required training assigned, completed, and recorded by person, site, and study — ready for inspection.</div>
+      </div>
+      <div class="readiness-card fade-up d3">
+        <div class="readiness-icon">📊</div>
+        <div class="readiness-title">Completion records by person and study</div>
+        <div class="readiness-body">Know exactly who has trained on what, and when. No spreadsheets, no chasing.</div>
+      </div>
+      <div class="readiness-card fade-up d4">
+        <div class="readiness-icon">🤖</div>
+        <div class="readiness-title">AI-built training from your documents</div>
+        <div class="readiness-body">Upload approved study materials and AI assembles structured, role-based modules for your team to review and deploy.</div>
+      </div>
+      <div class="readiness-card fade-up d5">
+        <div class="readiness-icon">☁️</div>
+        <div class="readiness-title">AWS Bedrock connectors</div>
+        <div class="readiness-body">Infrastructure built on SOC 2 and HIPAA-aligned AWS Bedrock. Accreditation documentation available on request.</div>
+      </div>
+      <div class="readiness-card fade-up d6">
+        <div class="readiness-icon">🔗</div>
+        <div class="readiness-title">Single sign-on &amp; role-based access</div>
+        <div class="readiness-body">Staff access the platform through existing credentials. No new passwords, no new portals to manage.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ AI BUILDS TRAINING ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="ai-builds" class="section-wrap section-gray">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> AI Builds Training</div>
+    <h2 class="section-h2 fade-up">Turn study documents<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">into ready-to-deploy training</span></h2>
+    <p class="section-lead fade-up">Before a site ever sees the agent, the platform compresses the slowest part of getting trial-ready: building the training itself. Upload the approved study documents, and AI assembles structured, role-based training your team reviews and deploys.</p>
+    <div class="steps-row">
+      <div class="step-item fade-up d1">
+        <div class="step-circle">1</div>
+        <div class="step-title">Upload approved study documents</div>
+        <div class="step-body">Protocol, manuals, SOPs, and study-specific materials, the content you already maintain.</div>
+      </div>
+      <div class="step-item fade-up d2">
+        <div class="step-circle">2</div>
+        <div class="step-title">AI builds the training</div>
+        <div class="step-body">It drafts structured, role-based modules from those documents, mapped to who needs to know what.</div>
+      </div>
+      <div class="step-item fade-up d3">
+        <div class="step-circle">3</div>
+        <div class="step-title">Review, approve, deploy</div>
+        <div class="step-body">Your team reviews and approves before release, then pushes trial-ready training to the site.</div>
+      </div>
+    </div>
+    <div class="benefits-row">
+      <div class="benefit-card fade-up d1">
+        <div class="benefit-icon">⏱</div>
+        <div class="benefit-title">Hours back, not weeks</div>
+        <div class="benefit-body">Content that took weeks to build by hand comes together in a fraction of the time.</div>
+      </div>
+      <div class="benefit-card fade-up d2">
+        <div class="benefit-icon">👤</div>
+        <div class="benefit-title">Built by the people who know</div>
+        <div class="benefit-body">Your content owners stay in control; AI does the assembly, not the approval.</div>
+      </div>
+      <div class="benefit-card fade-up d3">
+        <div class="benefit-icon">🚀</div>
+        <div class="benefit-title">Deploy faster, update faster</div>
+        <div class="benefit-body">When a document changes, regenerate the affected training instead of rebuilding from scratch.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ HOW THE AGENT STAYS CORRECT ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="agent-correct" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow on-dark fade-up"><span class="eyebrow-dot"></span> How The Agent Stays Correct</div>
+    <h2 class="section-h2 on-dark fade-up">The agent holds <span style="font-weight:300;color:rgba(255,255,255,0.45);">no static content.</span></h2>
+    <p class="section-lead on-dark fade-up">It draws only from the current approved study documents, under controlled version governance, and retrieves the right one at the moment it is asked.</p>
+    <div class="agent-grid">
+      <div class="fade-up d1">
+        <div class="doc-pkg-title">The controlled study document package</div>
+        <p class="doc-pkg-intro">The operational answer rarely lives only in the IRB-approved protocol. It lives across the controlled set:</p>
+        <div class="doc-tags">
+          <span class="doc-tag">Protocol &amp; ICF</span>
+          <span class="doc-tag">Lab manual</span>
+          <span class="doc-tag">Pharmacy / IP manual</span>
+          <span class="doc-tag">Imaging manual</span>
+          <span class="doc-tag">EDC &amp; eCOA guides</span>
+          <span class="doc-tag">Safety reporting</span>
+          <span class="doc-tag">Training decks</span>
+          <span class="doc-tag">Sponsor / CRO memos</span>
+        </div>
+        <div class="doc-version">Each carrying its version and effective date · plus the Revinova LMS the site trained on</div>
+      </div>
+      <div class="agent-flow fade-up d2">
+        <div class="agent-flow-item">
+          <div class="agent-flow-label">Per-trial AI agent</div>
+          <div class="agent-flow-text">Retrieves the released, current version, then answers with the source and version cited</div>
+        </div>
+        <div class="agent-flow-item">
+          <div class="agent-flow-label">In the workflow</div>
+          <div class="agent-flow-text">Embedded via SSO or workflow integration, where staff already work</div>
+        </div>
+      </div>
+      <div class="agent-why fade-up">
+        <p><strong>Why this matters:</strong> every answer is limited to approved study materials, shows its source document and version, logs the interaction, and escalates to a person when the materials do not support an answer.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ NOT ANOTHER LOGIN ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="not-another-login" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> Not Another Login</div>
+    <h2 class="section-h2 fade-up">Not another system<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">for the PI to log into.</span></h2>
+    <p class="section-lead fade-up">Your teams already work in the CTMS all day. Embedding help where they are reduces adoption friction, because it goes with the workflow instead of adding one more place to check.</p>
+    <div class="login-grid">
+      <div class="login-card fade-up d1">
+        <div class="login-icon">⚡</div>
+        <div class="login-title">Embedded in the workflow</div>
+        <div class="login-body">It works within the CTMS session staff are already in, so there is little new to learn. We do not give sites a new system; we meet them in the one they use.</div>
+      </div>
+      <div class="login-card fade-up d2">
+        <div class="login-icon">🔍</div>
+        <div class="login-title">Answers without the scramble</div>
+        <div class="login-body">Less hunting across portals, binders, inboxes, and shared drives mid-visit. Ask in place, keep working.</div>
+      </div>
+      <div class="login-card fade-up d3">
+        <div class="login-icon">🔔</div>
+        <div class="login-title">Surfaces what changed</div>
+        <div class="login-body">On login, the agent can flag pertinent updates for that user: amendments, memo changes, new procedures, anything released since their last session.</div>
+      </div>
+      <div class="login-card fade-up d4">
+        <div class="login-icon">💬</div>
+        <div class="login-title">Ask anything in scope</div>
+        <div class="login-body">Visit windows, lab kit handling, eligibility nuances, reporting steps. If it is in the approved study documents, the answer is a question away.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ IT GUIDES BECAUSE IT KNOWS ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="it-guides" class="section-wrap section-gray">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> It Guides Because It Knows</div>
+    <h2 class="section-h2 fade-up">Generic AI sees a question.<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">The trial assistant sees the site, the study, and the person asking.</span></h2>
+    <div class="guides-grid">
+      <div class="guides-panel fade-up d1">
+        <div class="guides-label">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M6 4v3l1.5 1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Context Aware
+        </div>
+        <ul class="guides-list">
+          <li>It lives inside the CTMS — knows where the user is working and what task is in front of them</li>
+          <li>Knows the site and the trial, so answers reflect this protocol at this location, not a generic study</li>
+          <li>Offers guidance at the point of action, before the misstep, not after the query</li>
+          <li>Scoped to the workflows and conventions of the CTMS your client actually runs</li>
+        </ul>
+      </div>
+      <div class="guides-panel fade-up d2">
+        <div class="guides-label">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M1.5 11c0-2.5 2-4 4.5-4s4.5 1.5 4.5 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+          User Aware
+        </div>
+        <ul class="guides-list">
+          <li>Knows who is asking — the site and the trial, so answers reflect this protocol at this location</li>
+          <li>Knows the role: a CRC, a sub-investigator, and a data manager get guidance fit to their responsibilities</li>
+          <li>Knows their training record, so it can close the exact gap between what was taught and what is being done</li>
+        </ul>
+      </div>
+      <div class="guides-sealed fade-up">
+        <p><strong>One assistant per trial. Each one is sealed to its own protocol, its own sites, its own approved materials.</strong></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ QUALITY TEAMS CAN TRUST IT ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="quality" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> Quality Teams Can Trust It</div>
+    <h2 class="section-h2 fade-up">Answers your quality<br><span style="font-weight:300;color:rgba(29,29,31,0.55);">team can stand behind</span></h2>
+    <p class="section-lead fade-up">General AI can produce a confident answer that is not actually supported by any source, the kind of plausible-but-unsupported response that has no place in trial conduct. The controls below are designed to prevent that.</p>
+    <div class="quality-grid">
+      <div class="quality-card fade-up d1">
+        <div class="quality-num">01</div>
+        <div class="quality-title">Approved materials only</div>
+        <div class="quality-body">Every response is limited to the current approved study materials. Nothing improvised, nothing from the open internet.</div>
+      </div>
+      <div class="quality-card fade-up d2">
+        <div class="quality-num">02</div>
+        <div class="quality-title">Source and version shown</div>
+        <div class="quality-body">Each answer displays its supporting source document and version, so staff can verify and monitors can trace any guidance to its origin.</div>
+      </div>
+      <div class="quality-card fade-up d3">
+        <div class="quality-num">03</div>
+        <div class="quality-title">Escalates when unsupported</div>
+        <div class="quality-body">When the approved materials do not support an answer, the agent says so and routes the question to a person, rather than producing an unsupported one.</div>
+      </div>
+      <div class="quality-card fade-up d4">
+        <div class="quality-num">04</div>
+        <div class="quality-title">Logged and reviewable</div>
+        <div class="quality-body">Interactions are logged with access controls, so you can show what was asked, what was answered, and which source and version backed it.</div>
+      </div>
+    </div>
+    <div class="quality-compliance fade-up">
+      Designed to support GCP-aligned training, controlled content, traceability, audit trails, and ALCOA+ data-integrity principles where applicable. Platform hosted on SOC 2 and HIPAA-aligned infrastructure (AWS Bedrock); accreditation documentation available on request.
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ A TUESDAY AT SITE 014 ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="tuesday" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow on-dark fade-up"><span class="eyebrow-dot"></span> A Tuesday At Site 014</div>
+    <h2 class="section-h2 on-dark fade-up">Coordinator running three studies. Patient in the chair at 9:40. Here is the difference.</h2>
+    <div class="tuesday-table fade-up">
+      <div class="tuesday-head">
+        <div class="tuesday-col without">Without</div>
+        <div class="tuesday-col with">With the trial assistant</div>
+      </div>
+      <div class="tuesday-row">
+        <div class="tuesday-cell without">Did Amendment 4 change this visit? Search inbox, call the CRA, check the portal.</div>
+        <div class="tuesday-cell with"><strong>Login briefing already flagged it:</strong> Visit 3 lab kit changed. Source shown.</div>
+      </div>
+      <div class="tuesday-row">
+        <div class="tuesday-cell without">Which sample handling applies here or in the other study? Risky recall.</div>
+        <div class="tuesday-cell with"><strong>Asks in place.</strong> Answer is scoped to this trial only, cited to the lab manual.</div>
+      </div>
+      <div class="tuesday-row">
+        <div class="tuesday-cell without">New hire shadows for weeks, asks the same questions everyone asked.</div>
+        <div class="tuesday-cell with"><strong>New hire asks the assistant,</strong> ramps in days, with answers tied to training.</div>
+      </div>
+      <div class="tuesday-row">
+        <div class="tuesday-cell without">Uncertain moment mid-visit becomes a judgment call. Sometimes a deviation.</div>
+        <div class="tuesday-cell with"><strong>Uncertain moment becomes a sourced answer.</strong> Procedure done right the first time.</div>
+      </div>
+    </div>
+    <p class="tuesday-multiply fade-up">Multiply by every coordinator, every visit, every site, every study you run.</p>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ WHAT YOUR SMO GETS ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="smo-gets" class="section-wrap section-gray">
+  <div class="section-inner">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span> What Your SMO Gets</div>
+    <h2 class="section-h2 fade-up">What your SMO gets</h2>
+    <div class="smo-grid">
+      <div class="smo-card fade-up d1">
+        <div class="smo-icon">📉</div>
+        <div class="smo-title">Reduced preventable deviation risk</div>
+        <div class="smo-body">Just-in-time, sourced guidance helps close the gap between what was trained and what gets done, lowering the preventable, information-driven deviations before they become findings.</div>
+      </div>
+      <div class="smo-card fade-up d2">
+        <div class="smo-icon">⚖️</div>
+        <div class="smo-title">More consistent execution across sites</div>
+        <div class="smo-body">Sites work from the same current approved documents, narrowing the interpretation gaps that drive monitoring findings.</div>
+      </div>
+      <div class="smo-card fade-up d3">
+        <div class="smo-icon">📋</div>
+        <div class="smo-title">Cleaner data, fewer queries</div>
+        <div class="smo-body">Procedures done right the first time support better source documentation and less downstream rework.</div>
+      </div>
+      <div class="smo-card fade-up d4">
+        <div class="smo-icon">🔄</div>
+        <div class="smo-title">Knowledge that survives turnover</div>
+        <div class="smo-body">Trial knowledge lives in the platform, not only in the coordinator who left, so retraining and ramp lean on a controlled source instead of memory.</div>
+      </div>
+      <div class="smo-card fade-up d5">
+        <div class="smo-icon">🔎</div>
+        <div class="smo-title">Inspection readiness</div>
+        <div class="smo-body">Training compliance, communications, and agent interactions are documented and traceable, supporting CAPA and inspection preparation.</div>
+      </div>
+      <div class="smo-card fade-up d6">
+        <div class="smo-icon">🏆</div>
+        <div class="smo-title">A stronger story for sponsors</div>
+        <div class="smo-body">Walk into feasibility with activation-ready sites and a documented, AI-supported quality layer few competitors can show.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ PILOT ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="pilot" class="section-wrap">
+  <div class="section-inner">
+    <div class="eyebrow on-dark fade-up"><span class="eyebrow-dot"></span> Pilot</div>
+    <h2 class="section-h2 on-dark fade-up">A pilot for sites ready<br><span style="font-weight:300;color:rgba(255,255,255,0.45);">to innovate early.</span></h2>
+    <p class="pilot-intro fade-up">You already trust the platform to get sites trained and ready. For organizations eager to move early on AI in trial conduct, this is an invitation to pilot the next layer: a per-trial agent that supports conduct and helps reduce preventable deviations, where your teams already work.</p>
+    <div class="pilot-steps">
+      <div class="pilot-step fade-up d1">
+        <div class="pilot-num">1</div>
+        <div class="pilot-title">Pick one live trial</div>
+        <div class="pilot-body">We inventory its approved study documents and name a content owner.</div>
+      </div>
+      <div class="pilot-step fade-up d2">
+        <div class="pilot-num">2</div>
+        <div class="pilot-title">Stand up the agent</div>
+        <div class="pilot-body">Embedded via SSO or workflow integration, scoped to your sites and roles.</div>
+      </div>
+      <div class="pilot-step fade-up d3">
+        <div class="pilot-num">3</div>
+        <div class="pilot-title">Measure one cycle</div>
+        <div class="pilot-body">Preventable deviations, query volume, and time-to-answer, before and after.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AI REPORT STRIP -->
+<section style="background:#f5f5f7; position:relative;">
+  <div style="max-width:1160px; margin:0 auto; padding:60px 40px;">
+    <div class="ai-report-strip fade-up">
+      <div class="intake-cta-left">
+        <div class="intake-cta-badge">
+          <span class="intake-cta-badge-dot"></span> Free Assessment
+        </div>
+        <h3 class="intake-cta-heading">Discover where your business stands on the AI Journey</h3>
+        <p class="intake-cta-desc">Get a personalized AI readiness report in minutes. Understand your gaps and your next steps.</p>
+      </div>
+      <div class="intake-cta-right">
+        <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="intake-cta-btn">Get Your Free AI Report →</a>
+        <span class="intake-cta-footnote">Takes less than 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .ai-report-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 48px; flex-wrap: wrap;
+    background: #ffffff; border: 1.5px solid rgba(0,0,0,0.08);
+    border-radius: 24px; padding: 40px 44px;
+    position: relative; overflow: hidden;
+  }
+  .ai-report-strip::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(135deg, #FC5D41, #E551F3);
+  }
+  .ai-report-strip::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(252,93,65,0.04), transparent 60%);
+  }
+  .intake-cta-left { flex: 1; min-width: 280px; position: relative; z-index: 1; }
+  .intake-cta-badge { display: inline-flex; align-items: center; gap: 7px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: #FC5D41; margin-bottom: 14px; }
+  .intake-cta-badge-dot { width: 7px; height: 7px; border-radius: 50%; background: #FC5D41; box-shadow: 0 0 8px rgba(252,93,65,0.6); flex-shrink: 0; animation: dotPulse 2s ease-in-out infinite; }
+  .intake-cta-heading { font-family: 'Lato', sans-serif; font-size: clamp(20px, 2vw, 26px); font-weight: 900; letter-spacing: -0.02em; color: #1d1d1f; margin-bottom: 10px; line-height: 1.2; }
+  .intake-cta-desc { font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 300; color: rgba(29,29,31,0.60); line-height: 1.65; max-width: 480px; }
+  .intake-cta-right { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; position: relative; z-index: 1; }
+  .intake-cta-btn { display: inline-flex; align-items: center; gap: 10px; background: linear-gradient(135deg, #FC5D41, #E551F3); color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; padding: 15px 32px; border-radius: 999px; text-decoration: none; box-shadow: 0 6px 24px rgba(252,93,65,0.32); transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
+  .intake-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(252,93,65,0.48); }
+  .intake-cta-footnote { font-family: 'Inter', sans-serif; font-size: 11px; color: rgba(29,29,31,0.40); text-align: center; }
+  @media (max-width: 768px) {
+    .ai-report-strip { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━ SCHEDULE DEMO ━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<section id="schedule-demo" class="section-wrap">
+  <div class="demo-inner">
+    <h2 class="demo-h2 fade-up">
+      Ready to bring the agent<br>
+      <span class="grad-text" style="font-weight:300;">into your CTMS?</span>
+    </h2>
+    <p class="demo-sub fade-up">Schedule a demo and see how it works inside your workflow, with your study documents.</p>
+    <div class="demo-cta fade-up">
+      <a href="https://bookings.cloud.microsoft/bookwithme/user/4fa74e3ccc5c401699a4e561195bf4e2%40revinova.com?anonymous&ismsaljsauthenabled" target="_blank" class="btn-primary" style="font-size:16px;padding:16px 36px;">Request a Demo →</a>
+    </div>
+    <div class="demo-url fade-up">revinova.com</div>
+  </div>
+</section>
+
+<script>
+  // ── Animated hero chat ──
+  const chatBody = document.getElementById('chat-body');
+  const messages = [
+    { type: 'q', text: 'Is patient 0047 still in the Visit 4 window? They missed their scheduled date.' },
+    { type: 'a', text: 'Yes — Patient 0047 is still within window. Visit 4 is allowed from Day 84 to Day 98. Today is Day 91.', source: 'Protocol v3.2 · Section 6.4' },
+    { type: 'q', text: 'Do I still need to collect the PK sample?' },
+    { type: 'a', text: 'Yes, PK sampling is required at Visit 4 per Amendment 3. Collect within 2 hours of dosing. Fasting is not required for this visit.', source: 'Lab Manual v2.1 · Amendment 3 Appendix B' },
+    { type: 'q', text: 'The patient already had breakfast — is that okay?' },
+    { type: 'a', text: 'Fasting is not required at Visit 4. You are clear to proceed. Document the meal time in the eCRF notes field.', source: 'Protocol v3.2 · Section 8.2' },
+  ];
+
+  function addTyping() {
+    const t = document.createElement('div');
+    t.className = 'ctms-typing ctms-msg';
+    t.innerHTML = '<span></span><span></span><span></span>';
+    chatBody.appendChild(t);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    setTimeout(() => t.classList.add('show'), 30);
+    return t;
+  }
+
+  function addMessage(msg, delay, onDone) {
+    setTimeout(() => {
+      const typing = msg.type === 'a' ? addTyping() : null;
+      const thinkTime = msg.type === 'a' ? 1000 : 0;
+      setTimeout(() => {
+        if (typing) typing.remove();
+        const el = document.createElement('div');
+        el.className = 'ctms-msg';
+        if (msg.type === 'q') {
+          el.innerHTML = `<div class="ctms-question">${msg.text}</div>`;
+        } else {
+          el.innerHTML = `<div class="ctms-answer"><div class="ctms-answer-text">${msg.text}</div><div class="ctms-source"><svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="2" y="1" width="6" height="8" rx="1" stroke="currentColor" stroke-width="1.3"/><path d="M4 4h2M4 6h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>${msg.source}</div></div>`;
+        }
+        chatBody.appendChild(el);
+        chatBody.scrollTop = chatBody.scrollHeight;
+        setTimeout(() => { el.classList.add('show'); if (onDone) onDone(); }, 30);
+      }, thinkTime);
+    }, delay);
+  }
+
+  let t = 1000;
+  messages.forEach(msg => {
+    addMessage(msg, t, null);
+    t += msg.type === 'q' ? 2200 : 3800;
+  });
+</script>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+
+  // Show floating banner when Adoption Trap section is fully reached
+  const bannerTrigger = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        setTimeout(() => {
+          document.getElementById('float-banner').classList.add('visible');
+        }, 800);
+        bannerTrigger.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+  bannerTrigger.observe(document.getElementById('adoption-trap'));
+</script>
+
+<!-- FLOATING BOTTOM BANNER -->
+<div id="float-banner">
+  <div class="float-banner-left">
+    <div class="float-banner-icon">🧠</div>
+    <p class="float-banner-text">Discover where your business stands on the AI Journey</p>
+  </div>
+  <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="float-banner-btn">Get Your Free AI Report →</a>
+  <button class="float-banner-close" onclick="document.getElementById('float-banner').style.display='none'" aria-label="Close">✕</button>
+</div>
+
+<style>
+  #float-banner {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(24px);
+    z-index: 9999;
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(135deg, #2a0a3e, #1a0630);
+    border: 1px solid rgba(252,93,65,0.25);
+    border-radius: 999px;
+    padding: 14px 20px 14px 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.40), 0 2px 8px rgba(252,93,65,0.15);
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 1.2s cubic-bezier(0.16,1,0.3,1), transform 1.2s cubic-bezier(0.16,1,0.3,1);
+  }
+  #float-banner.visible {
+    opacity: 1; pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+  }
+  .float-banner-left {
+    display: flex; align-items: center; gap: 12px; flex: 1;
+  }
+  .float-banner-icon {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(252,93,65,0.15);
+    border: 1px solid rgba(252,93,65,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .float-banner-text {
+    font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+    color: #ffffff; margin: 0;
+  }
+  .float-banner-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #FC5D41, #E551F3);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    padding: 12px 24px; border-radius: 999px; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(252,93,65,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: btnPulse 2s ease-in-out infinite;
+  }
+  .float-banner-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(252,93,65,0.50); }
+  @keyframes btnPulse {
+    0%,100% { box-shadow: 0 4px 16px rgba(252,93,65,0.35); }
+    50%     { box-shadow: 0 4px 32px rgba(252,93,65,0.75), 0 0 0 6px rgba(252,93,65,0.15); }
+  }
+  .float-banner-close {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.45); font-size: 18px; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s, background 0.2s; line-height: 1;
+  }
+  .float-banner-close:hover { color: #fff; background: rgba(255,255,255,0.12); }
+
+  /* Tablet */
+  @media (max-width: 768px) {
+    #float-banner {
+      left: 16px; right: 16px; bottom: 16px;
+      transform: translateY(24px);
+      border-radius: 20px; white-space: normal;
+    }
+    #float-banner.visible {
+      transform: translateY(0);
+    }
+    .float-banner-text { font-size: 14px; }
+    .float-banner-btn { font-size: 13px; padding: 11px 20px; }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    #float-banner {
+      left: 0; right: 0; bottom: 0;
+      border-radius: 20px 20px 0 0;
+      flex-direction: column; align-items: stretch;
+      padding: 20px 20px 28px;
+      gap: 14px; transform: translateY(100%);
+    }
+    #float-banner.visible { transform: translateY(0); }
+    .float-banner-left { padding-right: 36px; }
+    .float-banner-btn { width: 100%; animation: none; }
+    .float-banner-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 36px; height: 36px;
+    }
+  }
+</style>
+
+</body>
+</html>

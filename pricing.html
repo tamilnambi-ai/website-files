@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Revinova.ai — Pricing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700;900&family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Lato', sans-serif;
+      background: #ffffff;
+      color: #1d1d1f;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+    :root {
+      --coral:          #FC5D41;
+      --magenta:        #E551F3;
+      --grad-primary:   linear-gradient(135deg, #FC5D41, #E551F3);
+      --text:           #1d1d1f;
+      --text-secondary: rgba(29,29,31,0.60);
+      --text-muted:     rgba(29,29,31,0.40);
+      --border:         rgba(0,0,0,0.08);
+    }
+
+    .fade-up {
+      opacity: 0; transform: translateY(28px);
+      transition: opacity 0.7s cubic-bezier(0.16,1,0.3,1), transform 0.7s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .fade-up.d1 { transition-delay: 0.08s; }
+    .fade-up.d2 { transition-delay: 0.16s; }
+    .fade-up.d3 { transition-delay: 0.24s; }
+
+    .grad-text {
+      background: var(--grad-primary);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+    }
+
+    /* ── Sub-page hero ── */
+    #hero {
+      position: relative; width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #ffffff; text-align: center;
+      padding: 80px 40px 64px;
+      overflow: hidden;
+    }
+    #hero::before {
+      content: ''; position: absolute; inset: 0;
+      background-image: linear-gradient(rgba(0,0,0,0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(0,0,0,0.025) 1px, transparent 1px);
+      background-size: 80px 80px; pointer-events: none;
+    }
+    .hero-glow {
+      position: absolute; bottom: -60px; left: 50%; transform: translateX(-50%);
+      width: 800px; height: 280px; border-radius: 50%;
+      background: linear-gradient(135deg, rgba(252,93,65,0.08), rgba(229,81,243,0.06));
+      filter: blur(80px); pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 2; max-width: 720px; margin: 0 auto; }
+    .hero-kicker {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral); margin-bottom: 20px;
+    }
+    .hero-kicker-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: var(--coral);
+      box-shadow: 0 0 8px rgba(252,93,65,0.6); animation: dotPulse 2s ease-in-out infinite;
+    }
+    @keyframes dotPulse {
+      0%,100% { opacity:1; transform:scale(1); box-shadow:0 0 8px rgba(252,93,65,0.5); }
+      50%     { opacity:0.7; transform:scale(1.3); box-shadow:0 0 14px rgba(252,93,65,0); }
+    }
+    .hero-h1 {
+      font-size: clamp(36px, 4.5vw, 58px); font-weight: 900;
+      letter-spacing: -0.03em; margin-bottom: 6px; color: var(--text);
+    }
+    .hero-h1-light {
+      font-size: clamp(32px, 4vw, 54px);
+      color: rgba(29,29,31,0.30); margin-bottom: 24px;
+    }
+    .hero-body {
+      font-size: clamp(14px, 1.3vw, 16px);
+      color: var(--text-secondary); line-height: 1.7;
+      max-width: 500px; margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker fade-up"><span class="hero-kicker-dot"></span> Pricing</div>
+    <h1 class="hero-h1 fade-up d1">Simple, scalable pricing.</h1>
+    <p class="hero-h1-light fade-up d2">Built for every network size.</p>
+    <p class="hero-body fade-up d3">A learning platform that scales with your network, plus a per-trial agent that maps to each study you run.</p>
+  </div>
+</section>
+
+<!-- PRICING CARDS -->
+<section id="pricing-cards" style="background:#ffffff; padding: 60px 40px 100px;">
+  <div style="max-width:1160px; margin:0 auto;">
+    <div class="pricing-grid">
+
+      <!-- Starter -->
+      <div class="pc-card fade-up d1">
+        <div class="pc-tier">Starter</div>
+        <h3 class="pc-title">Single-site or new</h3>
+        <p class="pc-desc">Perfect for getting started with AI-powered learning.</p>
+        <div class="pc-price-wrap">
+          <span class="pc-dollar">$</span><span class="pc-amount">5,000</span>
+        </div>
+        <div class="pc-period">per year</div>
+        <ul class="pc-features">
+          <li><span class="pc-check">✓</span> Core readiness &amp; activation training</li>
+          <li><span class="pc-check">✓</span> GCP, SOP, onboarding tracking</li>
+          <li><span class="pc-check">✓</span> Completion tracking by person &amp; study</li>
+        </ul>
+      </div>
+
+      <!-- Growth (Popular) -->
+      <div class="pc-card pc-popular fade-up d2">
+        <div class="pc-popular-badge">Popular</div>
+        <div class="pc-tier">Growth</div>
+        <h3 class="pc-title">Multi-site network</h3>
+        <p class="pc-desc">For networks scaling across multiple sites.</p>
+        <div class="pc-price-wrap">
+          <span class="pc-dollar">$</span><span class="pc-amount">10,000</span>
+        </div>
+        <div class="pc-period">per year</div>
+        <ul class="pc-features">
+          <li><span class="pc-check">✓</span> Everything in Starter</li>
+          <li><span class="pc-check">✓</span> Multi-site rollups &amp; reporting</li>
+          <li><span class="pc-check">✓</span> SSO &amp; analytics dashboard</li>
+        </ul>
+      </div>
+
+      <!-- Network -->
+      <div class="pc-card fade-up d3">
+        <div class="pc-tier">Network</div>
+        <h3 class="pc-title">Enterprise / large network</h3>
+        <p class="pc-desc">For large organisations with complex requirements.</p>
+        <div class="pc-price-wrap pc-custom-wrap">
+          <span class="pc-custom">Custom</span>
+        </div>
+        <div class="pc-period">contact us for pricing</div>
+        <ul class="pc-features">
+          <li><span class="pc-check">✓</span> Everything in Growth</li>
+          <li><span class="pc-check">✓</span> Deploy in your AWS environment</li>
+          <li><span class="pc-check">✓</span> Dedicated success manager &amp; SLA</li>
+        </ul>
+      </div>
+
+      <!-- Per-Study Agent (dark) -->
+      <div class="pc-card pc-dark fade-up d4">
+        <div class="pc-tier pc-tier-dark">The Per-Study AI Coaching Agent</div>
+        <div class="pc-price-wrap">
+          <span class="pc-dollar pc-dollar-dark">$</span><span class="pc-amount pc-amount-dark">6,800</span>
+        </div>
+        <div class="pc-period pc-period-dark">per agent, per trial</div>
+        <div class="pc-no-fee"><span class="pc-no-fee-check">✓</span> No per-user fee</div>
+        <ul class="pc-features pc-features-dark">
+          <li><span class="pc-check pc-check-dark">✓</span> One dedicated agent per study, sealed to its protocol</li>
+          <li><span class="pc-check pc-check-dark">✓</span> Surfaced in the CTMS via single sign-on</li>
+          <li><span class="pc-check pc-check-dark">✓</span> 10M tokens included; overage billed at pass-through cost</li>
+          <li><span class="pc-check pc-check-dark">✓</span> White-glove setup: $2,500 per agent, per trial</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Pilot offer banner -->
+    <div class="pilot-banner fade-up">
+      <div class="pilot-left">
+        <span class="pilot-icon">⚡</span>
+        <p class="pilot-text"><strong>Pilot offer:</strong> be among the first to run the in-CTMS agent and take <span class="pilot-highlight">50% off</span> the AI agent for one study — white-glove setup included.</p>
+      </div>
+      <a href="https://bookings.cloud.microsoft/bookwithme/user/4fa74e3ccc5c401699a4e561195bf4e2%40revinova.com?anonymous&ismsaljsauthenabled" target="_blank" class="pilot-btn">Claim Offer →</a>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: stretch;
+  }
+  .pc-card {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 32px 28px;
+    position: relative;
+  }
+  .pc-popular {
+    border-color: var(--coral);
+    border-width: 2px;
+  }
+  .pc-dark {
+    background: #0d0b1e;
+    border-color: rgba(255,255,255,0.10);
+  }
+  .pc-popular-badge {
+    position: absolute;
+    top: -14px; left: 50%; transform: translateX(-50%);
+    background: var(--grad-primary);
+    color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    padding: 5px 18px; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .pc-tier {
+    font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 12px;
+  }
+  .pc-tier-dark { color: rgba(255,255,255,0.40); }
+  .pc-title {
+    font-family: 'Lato', sans-serif; font-size: clamp(18px, 1.8vw, 22px);
+    font-weight: 900; letter-spacing: -0.02em; color: var(--text);
+    margin-bottom: 8px; line-height: 1.2;
+  }
+  .pc-desc {
+    font-family: 'Lato', sans-serif; font-size: 13.5px;
+    color: var(--text-secondary); line-height: 1.6; margin-bottom: 24px;
+  }
+  .pc-price-wrap { display: flex; align-items: flex-start; line-height: 1; margin-bottom: 4px; }
+  .pc-dollar {
+    font-family: 'Lato', sans-serif; font-size: 22px; font-weight: 700;
+    color: var(--text); margin-top: 8px; margin-right: 2px;
+  }
+  .pc-dollar-dark { color: rgba(255,255,255,0.70); }
+  .pc-amount {
+    font-family: 'Lato', sans-serif; font-size: clamp(44px, 4.5vw, 56px);
+    font-weight: 900; letter-spacing: -0.03em; color: var(--text);
+  }
+  .pc-amount-dark { color: #ffffff; }
+  .pc-custom {
+    font-family: 'Lato', sans-serif; font-size: clamp(44px, 4.5vw, 56px);
+    font-weight: 900; letter-spacing: -0.03em; color: var(--text);
+  }
+  .pc-period {
+    font-family: 'Lato', sans-serif; font-size: 13px;
+    color: var(--text-muted); margin-bottom: 28px;
+  }
+  .pc-period-dark { color: rgba(255,255,255,0.40); }
+  .pc-no-fee {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.10);
+    border: 1px solid rgba(255,255,255,0.20);
+    border-radius: 999px; padding: 6px 16px;
+    font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600;
+    color: rgba(255,255,255,0.80); margin-bottom: 24px;
+  }
+  .pc-no-fee-check { color: var(--coral); }
+  .pc-features {
+    list-style: none; display: flex; flex-direction: column; gap: 12px;
+  }
+  .pc-features li {
+    font-family: 'Lato', sans-serif; font-size: 13.5px; font-weight: 400;
+    color: var(--text-secondary); line-height: 1.5;
+    display: flex; align-items: flex-start; gap: 10px;
+  }
+  .pc-features-dark li { color: rgba(255,255,255,0.55); }
+  .pc-check {
+    color: var(--coral); font-weight: 700; font-size: 13px; flex-shrink: 0; margin-top: 1px;
+  }
+  .pc-check-dark { color: rgba(255,255,255,0.50); }
+
+  @media (max-width: 1024px) {
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 600px) {
+    .pricing-grid { grid-template-columns: 1fr; }
+    #pricing-cards { padding: 0 24px 80px; }
+  }
+  .pilot-banner {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; flex-wrap: wrap;
+    background: rgba(252,93,65,0.05);
+    border: 1.5px solid rgba(252,93,65,0.25);
+    border-radius: 16px; padding: 20px 28px;
+    margin-top: 24px;
+  }
+  .pilot-left { display: flex; align-items: center; gap: 14px; flex: 1; }
+  .pilot-icon { font-size: 20px; flex-shrink: 0; }
+  .pilot-text {
+    font-family: 'Lato', sans-serif; font-size: 14.5px; font-weight: 400;
+    color: var(--text); line-height: 1.5;
+  }
+  .pilot-text strong { font-weight: 700; }
+  .pilot-highlight { color: var(--coral); font-weight: 700; }
+  .pilot-btn {
+    display: inline-flex; align-items: center;
+    background: var(--grad-primary); color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    padding: 13px 28px; border-radius: 999px; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(252,93,65,0.30);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .pilot-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(252,93,65,0.45); }
+</style>
+
+<!-- FEATURE COMPARISON TABLE -->
+<section id="comparison" style="background:#f5f5f7; padding: 100px 40px;">
+  <div style="max-width:1160px; margin:0 auto;">
+
+    <div class="eyebrow-pill fade-up" style="background:rgba(252,93,65,0.06); display:inline-flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; color:var(--coral); border:1.5px solid rgba(252,93,65,0.20); border-radius:999px; padding:6px 14px; margin-bottom:28px;">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0;display:inline-block;"></span> All Features
+    </div>
+    <h2 class="fade-up" style="font-family:'Lato',sans-serif; font-size:clamp(30px,3.5vw,46px); font-weight:900; letter-spacing:-0.02em; color:var(--text); margin-bottom:48px;">Compare plans<br><span style="font-weight:300;color:rgba(29,29,31,0.35);">side by side.</span></h2>
+
+    <div class="ct-wrap fade-up">
+      <table class="ct">
+        <thead>
+          <tr>
+            <th class="ct-label-col">All Features</th>
+            <th class="ct-col">Starter</th>
+            <th class="ct-col ct-pro-col">
+              <div style="position:relative; display:inline-block;">
+                <span style="position:absolute; top:-34px; left:50%; transform:translateX(-50%); background:var(--grad-primary); color:#fff; font-family:'Inter',sans-serif; font-size:11px; font-weight:700; letter-spacing:0.10em; text-transform:uppercase; padding:5px 18px; border-radius:999px; white-space:nowrap;">Popular</span>
+                Growth
+              </div>
+            </th>
+            <th class="ct-col">Network</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Monthly Tokens</td>
+            <td class="ct-val">1M</td>
+            <td class="ct-val ct-pro-val">10M Shared</td>
+            <td class="ct-val">Billed Directly by AWS</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Environment</td>
+            <td class="ct-val">Hosted by Revinova</td>
+            <td class="ct-val ct-pro-val">Hosted by Revinova</td>
+            <td class="ct-val">Hosted in your AWS Environment</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Security &amp; Access</td>
+            <td class="ct-val">Basic</td>
+            <td class="ct-val ct-pro-val">User-Based Authentication and Password Protection</td>
+            <td class="ct-val">Advanced Governance, Compliance, and Audit Visibility</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Governance &amp; Controls</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val">Role-Based Access Control</td>
+            <td class="ct-val">Full Governance with Multi-Tenant Permissions</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Single Sign-On (SSO)</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val">Included</td>
+            <td class="ct-val">Included</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">API Access &amp; Connectors</td>
+            <td class="ct-val">Standard</td>
+            <td class="ct-val ct-pro-val">Standard + AWS Bedrock, Amazon Q</td>
+            <td class="ct-val">Full API and Data Pipeline Integration</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Custom Connectors</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val">Available ($3,000 Build + $1,000/yr Maintenance)</td>
+            <td class="ct-val">Available ($3,000 Build + $1,000/yr Maintenance)</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Analytics &amp; Retrieval Logs</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val">Agent Performance Insights &amp; User Adoption Metrics</td>
+            <td class="ct-val">Enterprise-Grade Analytics</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Custom Branding</td>
+            <td class="ct-val">Included</td>
+            <td class="ct-val ct-pro-val">Included</td>
+            <td class="ct-val">Included</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Agent to Agent Orchestration</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val ct-dash">–</td>
+            <td class="ct-val">Model Context Protocol Support for Agent to Agent Communication</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Audit Logs</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val">Detailed Activity Logs</td>
+            <td class="ct-val">Full Audit History</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Agent Driven Actions</td>
+            <td class="ct-val ct-dash">–</td>
+            <td class="ct-val ct-pro-val ct-dash">–</td>
+            <td class="ct-val">Custom Lambda Functions</td>
+          </tr>
+          <tr class="ct-row-alt">
+            <td class="ct-feature">Support</td>
+            <td class="ct-val">Email</td>
+            <td class="ct-val ct-pro-val">Assisted Onboarding &amp; Setup Support</td>
+            <td class="ct-val">Dedicated Success Manager + SLA</td>
+          </tr>
+          <tr>
+            <td class="ct-feature">Add-Ons</td>
+            <td class="ct-val ct-addons">
+              <ul><li>Token/Storage Upgrades</li></ul>
+            </td>
+            <td class="ct-val ct-pro-val ct-addons">
+              <ul><li>Private LLM Hosting, White-Label, Onboarding</li></ul>
+            </td>
+            <td class="ct-val ct-addons">Full Enterprise Customization</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .ct-wrap {
+    background: #ffffff;
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    overflow: visible;
+  }
+  .ct {
+    width: 100%; border-collapse: collapse;
+  }
+  .ct thead tr {
+    border-bottom: 1.5px solid var(--border);
+  }
+  .ct thead th {
+    position: sticky;
+    top: 60px;
+    z-index: 10;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+  .ct thead th.ct-pro-col {
+    background: #fdf1ef;
+  }
+  .ct thead th:first-child { border-radius: 20px 0 0 0; }
+  .ct thead th:last-child  { border-radius: 0 20px 0 0; }
+  .ct tbody tr:last-child td:first-child { border-radius: 0 0 0 20px; }
+  .ct tbody tr:last-child td:last-child  { border-radius: 0 0 20px 0; }
+  .ct tbody tr:last-child .ct-pro-val    { border-bottom: 2.5px solid var(--coral); border-radius: 0 0 0 0; }
+  .ct-label-col {
+    width: 28%; padding: 24px 28px;
+    font-family: 'Lato', sans-serif; font-size: 18px; font-weight: 900;
+    color: var(--text); text-align: left; vertical-align: middle;
+    border-right: 1px solid var(--border);
+  }
+  .ct-col {
+    width: 24%; padding: 20px 24px;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    color: var(--text); text-align: center; vertical-align: middle;
+    border-right: 1px solid var(--border);
+  }
+  .ct-col:last-child { border-right: none; }
+  .ct-pro-col {
+    background: linear-gradient(160deg, rgba(252,93,65,0.10), rgba(229,81,243,0.07));
+    border-left: 2.5px solid var(--coral);
+    border-right: 2.5px solid var(--coral);
+    border-top: 2.5px solid var(--coral);
+    color: var(--coral);
+    font-size: 15px;
+    position: relative;
+  }
+  .ct tbody tr { border-bottom: 1px solid var(--border); }
+  .ct tbody tr:last-child { border-bottom: none; }
+  .ct-row-alt { background: #fafafa; }
+  .ct-feature {
+    padding: 18px 28px;
+    font-family: 'Lato', sans-serif; font-size: 13.5px; font-weight: 400;
+    color: var(--text); vertical-align: middle;
+    border-right: 1px solid var(--border);
+  }
+  .ct-val {
+    padding: 18px 20px;
+    font-family: 'Lato', sans-serif; font-size: 13px; font-weight: 400;
+    color: var(--text-secondary); text-align: center; vertical-align: middle;
+    border-right: 1px solid var(--border); line-height: 1.55;
+  }
+  .ct-val:last-child { border-right: none; }
+  .ct-pro-val {
+    background: linear-gradient(160deg, rgba(252,93,65,0.05), rgba(229,81,243,0.03));
+    border-left: 2.5px solid var(--coral);
+    border-right: 2.5px solid var(--coral);
+    color: var(--text);
+    font-weight: 500;
+  }
+  .ct-dash { color: var(--text-muted); font-size: 16px; }
+  .ct-addons ul { list-style: disc; padding-left: 16px; text-align: left; }
+  .ct-addons ul li { margin-bottom: 4px; }
+
+  @media (max-width: 768px) {
+    #comparison { padding: 80px 24px; }
+    .ct-wrap { overflow-x: auto; }
+    .ct { min-width: 640px; }
+  }
+</style>
+
+<!-- FAQ -->
+<section id="faq" style="background:#ffffff; padding:100px 40px;">
+  <div style="max-width:800px; margin:0 auto;">
+
+    <h2 class="faq-h2 fade-up">Frequently asked questions</h2>
+
+    <div class="faq-list fade-up d1">
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I add more AI agents mid-trial?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Yes — additional agents can be provisioned at any point during an active study. Each new agent is billed at the standard $6,800 rate and configured to its own protocol.</div>
+
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>Do tokens expire at the end of the trial?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Unused tokens do not roll over once a study closes. Each agent's token allocation is scoped to the duration of that specific trial.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>How is overage cost calculated?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Overage is billed at pass-through cost — whatever the underlying model provider charges, with no markup. You'll receive an itemised invoice at the end of each billing period.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          <span>What's included in white-glove setup?</span>
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">White-glove setup includes protocol ingestion, agent configuration, CTMS integration testing, and a dedicated onboarding call with your study team. Delivered within 5 business days of contract signature.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(32px, 4vw, 52px);
+    font-weight: 900; letter-spacing: -0.03em;
+    color: var(--text); text-align: center;
+    margin-bottom: 56px;
+  }
+  .faq-list { border-top: 1px solid var(--border); }
+  .faq-item { border-bottom: 1px solid var(--border); }
+  .faq-q {
+    width: 100%; display: flex; align-items: center; justify-content: space-between;
+    gap: 24px; padding: 26px 0;
+    background: none; border: none; cursor: pointer; text-align: left;
+    font-family: 'Lato', sans-serif; font-size: clamp(15px,1.5vw,17px); font-weight: 700;
+    color: var(--text); line-height: 1.4;
+  }
+  .faq-q:hover { color: var(--coral); }
+  .faq-icon {
+    width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0;
+    background: #f5f5f7; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 400; color: var(--text-muted);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+  }
+  .faq-q.open .faq-icon {
+    background: rgba(252,93,65,0.10);
+    border-color: rgba(252,93,65,0.30);
+    color: var(--coral);
+    transform: rotate(45deg);
+  }
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    font-family: 'Lato', sans-serif; font-size: clamp(14px,1.3vw,15px);
+    color: var(--text-secondary); line-height: 1.75;
+    transition: max-height 0.4s cubic-bezier(0.16,1,0.3,1), padding 0.3s;
+    padding: 0;
+  }
+  .faq-a.open { max-height: 300px; padding-bottom: 24px; }
+</style>
+
+<!-- AI REPORT STRIP -->
+<section style="background:#f5f5f7; position:relative;">
+  <div style="max-width:1160px; margin:0 auto; padding:60px 40px;">
+    <div class="ai-report-strip fade-up">
+      <div class="intake-cta-left">
+        <div class="intake-cta-badge">
+          <span class="intake-cta-badge-dot" style="background:var(--coral);box-shadow:0 0 8px rgba(252,93,65,0.6);"></span> Free Assessment
+        </div>
+        <h3 class="intake-cta-heading">Discover where your business stands on the AI Journey</h3>
+        <p class="intake-cta-desc">Get a personalized AI readiness report in minutes. Understand your gaps and your next steps.</p>
+      </div>
+      <div class="intake-cta-right">
+        <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="intake-cta-btn">Get Your Free AI Report →</a>
+        <span class="intake-cta-footnote">Takes less than 5 minutes</span>
+      </div>
+    </div>
+  </div>
+</section>
+<style>
+  .ai-report-strip {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 48px; flex-wrap: wrap;
+    background: #ffffff; border: 1.5px solid var(--border);
+    border-radius: 24px; padding: 40px 44px;
+    position: relative; overflow: hidden;
+  }
+  .ai-report-strip::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: var(--grad-primary);
+  }
+  .ai-report-strip::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background: radial-gradient(ellipse 60% 80% at 0% 50%, rgba(252,93,65,0.04), transparent 60%);
+  }
+  .intake-cta-badge { display: inline-flex; align-items: center; gap: 7px; font-family: 'Inter', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--coral); margin-bottom: 14px; }
+  .intake-cta-badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .intake-cta-heading { font-family: 'Lato', sans-serif; font-size: clamp(20px, 2vw, 26px); font-weight: 900; letter-spacing: -0.02em; color: var(--text); margin-bottom: 10px; line-height: 1.2; }
+  .intake-cta-desc { font-family: 'Lato', sans-serif; font-size: 15px; color: var(--text-secondary); line-height: 1.65; max-width: 480px; }
+  .intake-cta-right { display: flex; flex-direction: column; align-items: center; gap: 10px; flex-shrink: 0; position: relative; z-index: 1; }
+  .intake-cta-btn { display: inline-flex; align-items: center; gap: 10px; background: var(--grad-primary); color: #fff; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 700; padding: 15px 32px; border-radius: 999px; text-decoration: none; letter-spacing: -0.01em; box-shadow: 0 6px 24px rgba(252,93,65,0.32); transition: transform 0.2s, box-shadow 0.2s; white-space: nowrap; }
+  .intake-cta-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(252,93,65,0.48); }
+  .intake-cta-footnote { font-family: 'Inter', sans-serif; font-size: 11px; color: var(--text-muted); text-align: center; }
+  @media (max-width: 768px) {
+    .ai-report-strip { padding: 28px 24px; flex-direction: column; align-items: flex-start; }
+  }
+</style>
+
+<!-- FINAL CTA -->
+<section id="cta-final" style="background:#ffffff; position:relative; overflow:hidden;">
+  <div style="position:absolute;inset:0; background:linear-gradient(rgba(0,0,0,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(0,0,0,0.025) 1px,transparent 1px); background-size:80px 80px; pointer-events:none;"></div>
+  <div style="position:absolute;bottom:-60px;left:50%;transform:translateX(-50%);width:800px;height:280px;border-radius:50%;background:linear-gradient(135deg,rgba(252,93,65,0.08),rgba(229,81,243,0.06));filter:blur(80px);pointer-events:none;"></div>
+  <div class="cta-final-inner">
+    <div class="eyebrow fade-up" style="justify-content:center; display:inline-flex; align-items:center; gap:8px; font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:0.10em; text-transform:uppercase; color:var(--coral); margin-bottom:20px;">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--coral);flex-shrink:0;display:inline-block;"></span> Get Started
+    </div>
+    <h2 class="cta-final-h2 fade-up">Ready to activate your first trial?<br><span style="font-weight:300;color:rgba(29,29,31,0.30);">Let's get you set up in days.</span></h2>
+    <p class="cta-final-sub fade-up">Talk to the team about which plan fits your network — and get a live demo of the in-CTMS agent on your own protocol.</p>
+    <div class="fade-up" style="display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;">
+      <a href="https://bookings.cloud.microsoft/bookwithme/user/4fa74e3ccc5c401699a4e561195bf4e2%40revinova.com?anonymous&ismsaljsauthenabled" target="_blank" class="btn-cta-primary">Request a Demo →</a>
+    </div>
+    <div class="fade-up" style="margin-top:28px;font-family:'Inter',sans-serif;font-size:12px;color:var(--text-muted);">revinova.com</div>
+  </div>
+</section>
+
+<style>
+  .cta-final-inner {
+    max-width: 720px; margin: 0 auto;
+    padding: 120px 40px; text-align: center;
+    position: relative; z-index: 1;
+  }
+  .cta-final-h2 {
+    font-family: 'Lato', sans-serif;
+    font-size: clamp(34px, 4vw, 54px);
+    font-weight: 900; line-height: 1.08;
+    letter-spacing: -0.03em; color: var(--text); margin-bottom: 20px;
+  }
+  .cta-final-sub {
+    font-family: 'Lato', sans-serif; font-size: clamp(14px, 1.4vw, 16px);
+    color: var(--text-secondary); max-width: 480px; margin: 0 auto 40px; line-height: 1.7;
+  }
+  .btn-cta-primary {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--grad-primary); color: #fff;
+    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 700;
+    padding: 16px 36px; border-radius: 999px; text-decoration: none;
+    box-shadow: 0 4px 16px rgba(252,93,65,0.28);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .btn-cta-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(252,93,65,0.45); }
+  .btn-cta-secondary {
+    display: inline-flex; align-items: center;
+    background: transparent; color: var(--text);
+    font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;
+    padding: 15px 28px; border-radius: 999px;
+    border: 1.5px solid rgba(0,0,0,0.12); text-decoration: none;
+    transition: background 0.2s, border-color 0.2s, transform 0.2s;
+  }
+  .btn-cta-secondary:hover { background: #f5f5f7; border-color: rgba(0,0,0,0.20); transform: translateY(-1px); }
+</style>
+
+<script>
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const answer = item.querySelector('.faq-a');
+    const isOpen = btn.classList.contains('open');
+    // Close all
+    document.querySelectorAll('.faq-q.open').forEach(b => {
+      b.classList.remove('open');
+      b.closest('.faq-item').querySelector('.faq-a').classList.remove('open');
+    });
+    // Open clicked if it was closed
+    if (!isOpen) {
+      btn.classList.add('open');
+      answer.classList.add('open');
+    }
+  }
+</script>
+
+<script>
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.10, rootMargin: '0px 0px -40px 0px' });
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+<!-- FLOATING BOTTOM BANNER -->
+<div id="float-banner">
+  <div class="float-banner-left">
+    <div class="float-banner-icon">🧠</div>
+    <p class="float-banner-text">Discover where your business stands on the AI Journey</p>
+  </div>
+  <a href="https://d3pccyj6mhi24r.cloudfront.net/ai-readiness/source/index.html" target="_blank" class="float-banner-btn">Get Your Free AI Report →</a>
+  <button class="float-banner-close" onclick="document.getElementById('float-banner').style.display='none'" aria-label="Close">✕</button>
+</div>
+
+<style>
+  #float-banner {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(24px);
+    z-index: 9999;
+    display: flex; align-items: center; gap: 20px;
+    background: linear-gradient(135deg, #2a0a3e, #1a0630);
+    border: 1px solid rgba(252,93,65,0.25);
+    border-radius: 999px;
+    padding: 14px 20px 14px 16px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.40), 0 2px 8px rgba(252,93,65,0.15);
+    white-space: nowrap;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.6s cubic-bezier(0.16,1,0.3,1), transform 0.6s cubic-bezier(0.16,1,0.3,1);
+  }
+  #float-banner.visible {
+    opacity: 1; pointer-events: all;
+    transform: translateX(-50%) translateY(0);
+    animation: bannerBounce 0.6s cubic-bezier(0.36,0.07,0.19,0.97) 0.6s 1 both;
+  }
+  @keyframes bannerBounce {
+    0%,100% { transform: translateX(-50%) translateY(0); }
+    20%     { transform: translateX(-50%) translateY(-12px); }
+    40%     { transform: translateX(-50%) translateY(0); }
+    60%     { transform: translateX(-50%) translateY(-6px); }
+    80%     { transform: translateX(-50%) translateY(0); }
+  }
+  .float-banner-left {
+    display: flex; align-items: center; gap: 12px; flex: 1;
+  }
+  .float-banner-icon {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    background: rgba(252,93,65,0.15);
+    border: 1px solid rgba(252,93,65,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+  .float-banner-text {
+    font-family: 'Lato', sans-serif; font-size: 15px; font-weight: 700;
+    color: #ffffff; margin: 0;
+  }
+  .float-banner-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    background: linear-gradient(135deg, #FC5D41, #E551F3);
+    color: #ffffff;
+    font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 700;
+    padding: 12px 24px; border-radius: 999px; text-decoration: none;
+    white-space: nowrap; flex-shrink: 0;
+    box-shadow: 0 4px 16px rgba(252,93,65,0.35);
+    transition: transform 0.2s, box-shadow 0.2s;
+    animation: btnPulse 2s ease-in-out infinite;
+  }
+  .float-banner-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(252,93,65,0.50); }
+  @keyframes btnPulse {
+    0%,100% { box-shadow: 0 4px 16px rgba(252,93,65,0.35); }
+    50%     { box-shadow: 0 4px 32px rgba(252,93,65,0.75), 0 0 0 6px rgba(252,93,65,0.15); }
+  }
+  .float-banner-close {
+    background: none; border: none; cursor: pointer;
+    color: rgba(255,255,255,0.45); font-size: 18px; flex-shrink: 0;
+    width: 32px; height: 32px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: color 0.2s, background 0.2s; line-height: 1;
+  }
+  .float-banner-close:hover { color: #fff; background: rgba(255,255,255,0.12); }
+
+  /* Tablet */
+  @media (max-width: 768px) {
+    #float-banner {
+      left: 16px; right: 16px; bottom: 16px;
+      transform: translateY(24px);
+      border-radius: 20px; white-space: normal;
+    }
+    #float-banner.visible {
+      transform: translateY(0);
+      animation: none;
+    }
+    .float-banner-text { font-size: 14px; }
+    .float-banner-btn { font-size: 13px; padding: 11px 20px; }
+  }
+
+  /* Mobile */
+  @media (max-width: 480px) {
+    #float-banner {
+      left: 0; right: 0; bottom: 0;
+      border-radius: 20px 20px 0 0;
+      flex-direction: column; align-items: stretch;
+      padding: 20px 20px 28px;
+      gap: 14px; transform: translateY(100%);
+    }
+    #float-banner.visible { transform: translateY(0); animation: none; }
+    .float-banner-left { padding-right: 36px; }
+    .float-banner-btn { width: 100%; animation: none; }
+    .float-banner-close {
+      position: absolute; top: 14px; right: 14px;
+      width: 36px; height: 36px;
+    }
+  }
+</style>
+
+<script>
+  setTimeout(function() {
+    document.getElementById('float-banner').classList.add('visible');
+  }, 3000);
+</script>
+
+</body>
+</html>
